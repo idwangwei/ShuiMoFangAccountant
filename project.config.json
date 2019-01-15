@@ -1,0 +1,58 @@
+{
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": false,
+		"minified": true,
+		"newFeature": true,
+		"autoAudits": false
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.2.5",
+	"appid": "wx37e2e74406c87485",
+	"projectname": "%E7%A8%8E%E9%AD%94%E6%96%B9%E4%BC%9A%E8%AE%A1%E7%AB%AF",
+	"scripts": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 0,
+			"list": [
+				{
+					"id": 0,
+					"name": "打开分享的小程序卡片",
+					"pathName": "pages/start/start",
+					"query": "userId=13123456789",
+					"scene": "1007"
+				},
+				{
+					"id": 1,
+					"name": "打开带shareTicket的小程序卡片",
+					"pathName": "pages/my/index",
+					"query": "userId=13123456789&hasShareTicket=true",
+					"scene": "1044",
+					"shareInfo": {
+						"groupName": "测试模拟群0",
+						"shareName": "w345kVIy4atSyXpX6etsJxW9snxnkAJY98ap3w6Hw7k@cr4dev",
+						"shareKey": "OZR2UZ3R1eNB-aZ1Ngc5XxlXum2BescirCEIbsdAmWbuTauJYPyxM9xHxKHI8ooHJGGiU24byDcfxKA4X09rSA~~"
+					}
+				}
+			]
+		}
+	}
+}
