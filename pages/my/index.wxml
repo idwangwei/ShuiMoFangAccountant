@@ -9,7 +9,7 @@
     <view class="my-item" bindtap="toApplyPage">
         <view class="phone-str">
             <image src="/images/addr-edit.png" mode="aspectFit"></image>
-            <text>申请为业务员</text>
+            <text>{{serviceItems.length?'查看申请':'申请为业务员'}}</text>
         </view>
         <view class="bind-phone-btn">
             <text class="arrow-right"></text>
@@ -17,6 +17,18 @@
     </view>
 
 
+    <view class="my-service-item">
+        <view class="service-item-title">
+            <text>我的业务范围：</text>
+            <view class="score-exchange"></view>
+        </view>
+        <view class="service-item-box">
+            <view wx:for="{{serviceItems}}" wx:key="index">{{item.location}}->{{item.catalogName}}</view>
+            <view wx:if="{{!serviceItems.length}}">
+                ...
+            </view>
+        </view>
+    </view>
     <view class="my-score">
         <view class="score-title">
             <text>我的金币：{{scoreNumber}}</text>

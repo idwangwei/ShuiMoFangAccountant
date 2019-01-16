@@ -107,6 +107,25 @@
     justify-content: center;
 }
 
+.my-service-item{
+    width:100%;
+    background-color:#fff;
+    margin:30rpx;
+}
+.service-item-title{
+    height: 100rpx;
+    line-height: 100rpx;
+    border-bottom: 1rpx solid #eee;
+    padding: 0 30rpx;
+}
+.service-item-box{
+    font-size: 28rpx;
+    padding: 30rpx;
+}
+.service-item-box view{
+    padding: 30rpx 0;
+}
+
 page{
     background-color: #eee;
 }

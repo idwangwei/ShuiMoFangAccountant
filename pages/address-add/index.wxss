@@ -86,7 +86,7 @@ picker {
     color: #777;
 }
 .choose-img{
-    width: 30%;
+    width: 500rpx;
 }
 .upload-pic-box{
     display: flex;

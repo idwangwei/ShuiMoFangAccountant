@@ -7,28 +7,125 @@ Page({
     data: {
         multiIndex: [0, 0, 0],
         multiArray: [],
-        telNumber:'',
-        userName:'',
-        codeNumber:'',
-        idCardNum:'',
-        idCardSrc:[defaultSrc,defaultSrc],
-        certificateSrc:defaultSrc, //资格证图片
-        positionalSrc:defaultSrc, //职称图片
-        BigExampleSrc:'',
-        serviceItems:[], //服务项目
-        selectedServiceItems:[], //勾选的服务项目
-        serverPicName:{
-            idcard:[], //成功保存到服务器的身份证图片名称（正反两张）
-            certificate:[], //成功保存到服务器的资格证图片名称
+        telNumber: '',
+        userName: '',
+        codeNumber: '',
+        idCardNum: '',
+        idCardSrc: [defaultSrc, defaultSrc],
+        certificateSrc: defaultSrc, //资格证图片
+        positionalSrc: defaultSrc, //职称图片
+        BigExampleSrc: '',
+        serviceItems: [], //服务项目
+        selectedServiceItems: [], //勾选的服务项目
+        serverPicName: {
+            idcard: [], //成功保存到服务器的身份证图片名称（正反两张）
+            certificate: [], //成功保存到服务器的资格证图片名称
+        },
+        formDisabled: false,
+        btnStr: '申请'
+    },
+
+    onLoad: function (e) {
+        wx.showLoading({
+            title: '获取最近一次申请记录',
+            mask: true
+        });
+        this.initCityData();
+        api.fetchRequestAll([
+            api.fetchRequest('/api/apply/offer/latest'),
+            api.fetchRequest('/api/product/catalogs')
+        ])
+            .then((res) => {
+                wx.hideLoading();
+                let applyInfo = res[0].data,
+                    serviceItemInfo = res[1].data;
+                if (applyInfo.status != 200) {
+                    wx.showToast({title: applyInfo.errMsg});
+                    return;
+                }
+                if (serviceItemInfo.status != 200) {
+                    wx.showToast({title: applyInfo.errMsg});
+                    return;
+                }
+
+                // "name": "孙悟空",
+                // "phone": "18280377867",
+                // "idcardImagesStr": "2c2ac0e1-6e39-44d8-8b90-3f64bcbec9cf.jpg,9512a3e8-c767-4588-b7b3-5b8af39fa35c.jpeg",
+                // "idNumber": "513877678887878989",
+                // "certificateImagesStr": "42bc1272-d132-4f95-8337-45cc300e0ebc.jpg",
+                // "locationsStr": "四川省-成都市-锦江区",
+                // "offersStr": "1,2,3",
+                // "status": "APPLYING"
+                let lastApplyInfo = {
+                    certificateImages: applyInfo.data.certificateImagesStr.split(','),
+                    idNumber: applyInfo.data.idNumber,
+                    idcardImages: applyInfo.data.idcardImagesStr.split(','),
+                    locations: applyInfo.data.locationsStr.split(','),
+                    name: applyInfo.data.name,
+                    offers: applyInfo.data.offersStr.split(','),
+                    phone: applyInfo.data.phone,
+                    status: applyInfo.data.status
+                };
+
+                let {multiIndex, multiArray} = this.parseLocation(lastApplyInfo.locations[0]);
+                for (let item of lastApplyInfo.offers) {
+                    serviceItemInfo.data.find(obj => obj.id == item).checked = true;
+                }
+
+                this.setData({
+                    serviceItems: serviceItemInfo.data,
+                    telNumber: lastApplyInfo.phone,
+                    idCardNum: lastApplyInfo.idNumber,
+                    userName: lastApplyInfo.name,  //applyInfo.name,
+                    serverPicName: {
+                        idcard: lastApplyInfo.idcardImages,
+                        certificate: lastApplyInfo.certificateImages
+                    },
+                    selectedServiceItems: lastApplyInfo.offers,  //applyInfo.offersStr.split(','),
+                    formDisabled: lastApplyInfo.status == 'APPLYING',  //applyInfo.status
+                    btnStr:lastApplyInfo.status == 'APPLYING'?'审核中':'再次申请',
+                    multiIndex,
+                    multiArray,
+                });
+                if(lastApplyInfo.status == 'REFUSE'){
+                    wx.showModal({
+                        title: '提示',
+                        content: res.data.msg,
+                        showCancel: false
+                    })
+                }
+            })
+            .catch(() => {
+                wx.hideLoading();
+            });
+    },
+    parseLocation: function (locationStr) {
+        let multiIndex = [0, 0, 0];
+        let multiArray = [[], [], []];
+        let locationArr = locationStr.split('-');
+
+        for (let i = 0; i < citys.cityData.length; i++) {
+            multiArray[0].push(citys.cityData[i].name);
+            if (citys.cityData[i].name === locationArr[0]) {
+                multiIndex[0] = i;
+            }
+        }
+        let cityList = citys.cityData[multiIndex[0]].cityList;
+        for (let j = 0; j < cityList.length; j++) {
+            multiArray[1].push(cityList[j].name);
+            if (cityList[j].name === locationArr[1]) {
+                multiIndex[1] = j;
+            }
+        }
+        let districtList = citys.cityData[multiIndex[0]].cityList[multiIndex[1]].districtList
+        for (let k = 0; k < districtList.length; k++) {
+            multiArray[2].push(districtList[k].name);
+            if (districtList[k].name === locationArr[2]) {
+                multiIndex[2] = k;
+            }
         }
 
-    },
-    bindCancel: function () {
-        wx.navigateBack({})
-    },
-
-    saveInfoToLocal:function(e){
-
+        return {multiIndex, multiArray}
     },
 
     bindSave: function (e) {
@@ -38,10 +135,6 @@ Page({
         let code = e.detail.value.code;
         let idcard = e.detail.value.idcard;
 
-        wx.showLoading({
-            title:'提交申请中',
-            mask:true
-        });
         //todo 校验手机验证码
 
 
@@ -62,91 +155,141 @@ Page({
             return
         }
         let locations = `${this.data.multiArray[0][this.data.multiIndex[0]]}-${this.data.multiArray[1][this.data.multiIndex[1]]}-${this.data.multiArray[2][this.data.multiIndex[2]]}`;
-        api.fetchRequest(`/api/apply/offer`,{
-            certificateImages:this.data.serverPicName.certificate.join(','),
-            idNumber:idcard,
-            idcardImages:this.data.serverPicName.idcard.join(','),
-            locations:locations,
-            name:linkMan,
-            offers:this.data.selectedServiceItems.join(','),
-            phone:mobile,
-            status:'APPLYING'
-        }).then(function (res) {
-            wx.hideLoading();
-            if (res.data.status != 200) {
-                wx.showModal({
-                    title: '提示',
-                    content: res.data.msg,
-                    showCancel: false
-                });
-            }else {
-                wx.showModal({
-                    title: '提示',
-                    content: '提交成功，等待审核',
-                    showCancel: false
-                });
-            }
+        wx.showLoading({
+            title: '提交申请中',
+            mask: true
+        });
 
-        }).catch(function(res){
-            wx.showModal({
-                title: '提交失败',
-                content: res.data.msg,
-                showCancel: false
-            });
-        })
-    },
-
-    onLoad: function (e) {
-        const that = this;
-        this.initCityData(1);
-        this.getServiceItems();
-
-    },
-
-    getServiceItems:function(){
-        let that = this;
-        api.fetchRequest('/api/product/catalogs').then(function (res) {
-            if (res.data.status != 200) {
-                // 登录错误
+        let paramData = {
+            certificateImages: this.data.serverPicName.certificate.join(','),
+            idNumber: idcard,
+            idcardImages: this.data.serverPicName.idcard.join(','),
+            locations: locations,
+            name: linkMan,
+            offers: this.data.selectedServiceItems.join(','),
+            phone: mobile,
+            status: 'APPLYING'
+        };
+        api.fetchRequest('/api/apply/offer', paramData, 'POST', 0, {'content-type': 'application/x-www-form-urlencoded'})
+            .then(function (res) {
+                wx.hideLoading();
+                if (res.data.status != 200) {
+                    wx.showModal({
+                        title: '提示',
+                        content: res.data.msg,
+                        showCancel: false
+                    });
+                } else {
+                    wx.showModal({
+                        title: '提示',
+                        content: '提交成功，等待审核',
+                        showCancel: false
+                    });
+                }
+            })
+            .catch(function (res) {
                 wx.hideLoading();
                 wx.showModal({
-                    title: '服务项目获取失败',
-                    content: res.data.msg,
+                    title: '提交失败',
+                    content: res.errMsg,
                     showCancel: false
                 });
-                return;
-            }
-            that.setData({
-                serviceItems:res.data.data
             })
-        })
+
     },
 
-    initCityData:function () {
+
+    setApplyInfo: function () {
+
+    },
+
+    initCityData: function () {
         //默认地址为四川成都区域待选择
-        let multiArray = [[],[],[]];
-        let multiIndex = [0,0,0];
-        for(let i = 0; i < citys.cityData.length;i++){
+        let multiArray = [[], [], []];
+        let multiIndex = [0, 0, 0];
+        for (let i = 0; i < citys.cityData.length; i++) {
             multiArray[0].push(citys.cityData[i].name);
-            if(citys.cityData[i].id === 510000){
+            if (citys.cityData[i].id === 510000) {
                 multiIndex[0] = i;
-                for(let j = 0; j<citys.cityData[i].cityList.length;j++){
-                    multiArray[1].push(citys.cityData[i].cityList[j].name);
-                    if(citys.cityData[i].cityList[j].id === 510100){
-                        multiIndex[1] = j;
-                        multiArray[2].push(...citys.cityData[i].cityList[j].districtList.map((item)=>item.name))
-                    }
-                }
             }
         }
+        let cityList = citys.cityData[multiIndex[0]].cityList;
+        for (let j = 0; j < cityList.length; j++) {
+            multiArray[1].push(cityList[j].name);
+            if (cityList[j].id === 510100) {
+                multiIndex[1] = j;
+                multiArray[2].push(...cityList[j].districtList.map((item) => item.name))
+            }
+        }
+
+
         this.setData({
             multiArray,
             multiIndex
         });
     },
 
-    chooseAndSavePic:function(e){
+    chooseAndSavePic: function (e) {
+        if (this.data.formDisabled) {
+            return
+        }
         let that = this;
+        let uploadPic = (type, picSrc) => {
+            wx.uploadFile({
+                url: api.API_BASE_URL + `/api/upload/img/${type}`,
+                filePath: picSrc,
+                name: 'file',
+                formData: {},
+                success: function (res) {
+                    let fileName = '';
+                    try {
+                        fileName = JSON.parse(res.data).data.fileName;
+                    } catch (e) {
+                        wx.showToast({
+                            title: '提示',
+                            content: '图片上传失败',
+                            showCancel: false
+                        });
+                        return
+                    }
+
+                    let picType = e.target.dataset.type;
+                    let [idcard_0, idcard_1] = that.data.idCardSrc;
+                    let serverPicName = that.data.serverPicName;
+                    if (picType == 'idcard_0') {
+                        serverPicName.idcard[0] = fileName;
+                        that.setData({
+                            idCardSrc: [picSrc, idcard_1],
+                            serverPicName
+                        });
+
+                    }
+                    if (picType == 'idcard_1') {
+                        serverPicName.idcard[1] = fileName;
+                        that.setData({
+                            idCardSrc: [idcard_0, picSrc],
+                            serverPicName
+
+                        });
+                    }
+                    if (picType == 'certificate') {
+                        serverPicName.certificate = [fileName];
+                        that.setData({
+                            certificateSrc: picSrc,
+                            serverPicName
+                        });
+                    }
+
+                },
+                fail: function (err) {
+                    wx.showToast({
+                        title: '图片上传失败',
+                        content: err.errMsg,
+                        showCancel: false
+                    });
+                }
+            });
+        };
         wx.chooseImage({
             count: 1,
             sizeType: ['original', 'compressed'],
@@ -154,49 +297,19 @@ Page({
             success(res) {
                 let picSrc = res.tempFilePaths[0];
                 let type = e.target.dataset.type;
-                if (type.indexOf('idcard')!=-1){
+                if (type.indexOf('idcard') != -1) {
                     type = 'idcard'
                 }
-                wx.uploadFile({
-                    url: api.API_BASE_URL + `/api/upload/img/${type}`,
-                    filePath: picSrc,
-                    name: 'file',
-                    formData: {},
-                    success: function (res) {
-                        let type = e.target.dataset.type;
-                        let [idcard_0,idcard_1] = that.data.idCardSrc;
-                        if (type == 'idcard_0'){
-                            that.setData({
-                                idCardSrc:[picSrc,idcard_1]
-                            });
-                        }
-                        if (type == 'idcard_1'){
-                            that.setData({
-                                idCardSrc:[idcard_0,picSrc]
-                            });
-                        }
-                        if (type == 'certificate'){
-                            that.setData({
-                                certificateSrc:picSrc
-                            });
-                        }
-                    },
-                    fail: function (err) {
-                        wx.showToast({
-                            title: '图片上传失败',
-                            content: err.errMsg,
-                            showCancel: false
-                        });
-                    }
-                });
+                uploadPic(type, picSrc);
             }
         })
+
     },
 
-    checkboxChange:function(e){
+    checkboxChange: function (e) {
 
         this.setData({
-            selectedServiceItems:e.detail.value
+            selectedServiceItems: e.detail.value
         })
     },
 
@@ -218,17 +331,17 @@ Page({
             case 0:
                 data.multiIndex[1] = 0;
                 data.multiIndex[2] = 0;
-                data.multiArray[1] = [...citys.cityData[data.multiIndex[0]].cityList.map((item)=>item.name)];
-                data.multiArray[2] = [...citys.cityData[data.multiIndex[0]].cityList[0].districtList.map((item)=>item.name)];
+                data.multiArray[1] = [...citys.cityData[data.multiIndex[0]].cityList.map((item) => item.name)];
+                data.multiArray[2] = [...citys.cityData[data.multiIndex[0]].cityList[0].districtList.map((item) => item.name)];
                 break;
             case 1:
                 data.multiIndex[2] = 0;
-                data.multiArray[2] = [...citys.cityData[data.multiIndex[0]].cityList[data.multiIndex[1]].districtList.map((item)=>item.name)];
+                data.multiArray[2] = [...citys.cityData[data.multiIndex[0]].cityList[data.multiIndex[1]].districtList.map((item) => item.name)];
                 break
         }
         console.log(data.multiIndex);
         this.setData({
-            multiArray:data.multiArray
+            multiArray: data.multiArray
         })
     },
 });

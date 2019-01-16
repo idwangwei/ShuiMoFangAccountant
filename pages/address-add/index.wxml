@@ -6,26 +6,26 @@
                 <view class="label">联系人</view>
                 <view class="label-right">
                     <input name="linkMan" class="input" type="text" placeholder="姓名"
-                           value="{{userName}}"/>
+                           value="{{userName}}" disabled="{{formDisabled}}"/>
                 </view>
             </view>
             <view class="row-wrap">
                 <view class="label">手机号码</view>
                 <view class="label-right">
                     <input name="mobile" class="input" maxlength="11" type="number" placeholder="11位手机号码"
-                           value="{{telNumber}}"/>
+                           value="{{telNumber}}" disabled="{{formDisabled}}"/>
                 </view>
             </view>
             <view class="row-wrap">
                 <view class="label">验证码</view>
                 <view class="label-right">
                     <input name="code" class="input" maxlength="6" type="number" placeholder="6位验证码"
-                           value="{{codeNumber}}"/>
+                           value="{{codeNumber}}" disabled="{{formDisabled}}"/>
                 </view>
             </view>
             <view class="row-wrap">
                 <view class="label">选择地区</view>
-                <picker mode="multiSelector"
+                <picker mode="multiSelector" disabled="{{formDisabled}}"
                         bindchange="bindMultiPickerChange"
                         bindcolumnchange="bindMultiPickerColumnChange"
                         value="{{multiIndex}}"
@@ -40,7 +40,7 @@
                 <view class="label">选择服务项</view>
                 <checkbox-group bindchange="checkboxChange">
                     <label class="checkbox" wx:for="{{serviceItems}}" wx:key="{{index}}">
-                        <checkbox value="{{item.id}}" checked="{{item.checked}}" />
+                        <checkbox value="{{item.id}}" checked="{{item.checked}}" disabled="{{formDisabled}}"/>
                         {{item.name}}
                     </label>
                 </checkbox-group>
@@ -53,7 +53,7 @@
                 <view class="label">身份证号</view>
                 <view class="label-right">
                     <input name="idcard" class="input" type="idcard" placeholder="输入身份证号码"
-                           value="{{idCardNum}}"/>
+                           value="{{idCardNum}}" disabled="{{formDisabled}}"/>
                 </view>
             </view>
             <view class="row-wrap upload-pic-box">
@@ -74,8 +74,7 @@
 
         </view>
         <view style="display: flex;">
-            <button type="default" bindtap="saveInfoToLocal">保存</button>
-            <button type="default" formType="submit">申请</button>
+            <button type="default" formType="submit">{{btnStr}}</button>
         </view>
     </form>
 </view>

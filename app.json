@@ -1,6 +1,5 @@
 {
   "pages": [
-    "pages/my/index",
     "pages/start/start",
     "pages/index/index",
     "pages/goods-details/index",
@@ -10,6 +9,7 @@
     "pages/address-add/index",
     "pages/order-list/index",
     "pages/order-details/index",
+    "pages/my/index",
     "pages/mycoupons/index",
     "pages/notice/show",
     "pages/recharge/index",

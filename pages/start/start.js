@@ -92,7 +92,7 @@ Page({
                         });
                         return;
                     }
-                    app.globalData.userInfo.openId = res.data.data.wxOpenId;
+                    app.globalData.userInfo.openId = res.data.data.openid;
                     wx.setStorageSync('userInfo',app.globalData.userInfo);
                     app.LoginSys(app.globalData.userInfo.openId).then(()=>{
                         that.goToIndex();
