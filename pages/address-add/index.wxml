@@ -73,8 +73,8 @@
             </view>
 
         </view>
-        <view style="display: flex;">
-            <button type="default" formType="submit">{{btnStr}}</button>
+        <view>
+            <button class="weui-btn" type="primary" formType="submit">{{btnStr}}</button>
         </view>
     </form>
 </view>

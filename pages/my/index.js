@@ -4,17 +4,21 @@ const CONFIG = require('../../config.js');
 Page({
     data: {
         scoreNumber: 0,
-        serviceItems:[]
+        serviceItems: []
     },
     onLoad() {
         let that = this;
         wx.showLoading();
-        api.fetchRequest(`/api/service/offer/${app.globalData.userInfo.id}`).then(function (res) {
-            wx.hideLoading();
-            that.setData({
-                serviceItems:res.data.data,
+        api.fetchRequest(`/api/service/offer/${app.globalData.userInfo.id}`)
+            .then(function (res) {
+                wx.hideLoading();
+                that.setData({
+                    serviceItems: res.data.data,
+                })
             })
-        })
+            .catch(()=>{
+                wx.hideLoading();
+            })
 
     },
     onShow() {

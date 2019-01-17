@@ -69,9 +69,10 @@ Page({
      * 弹出下单确认框
      */
     bindGuiGeTap: function () {
-        this.setData({
-            hideShopPopup: false
+        wx.switchTab({
+            url: '/pages/my/index'
         })
+
     },
     /**
      * 隐藏下单确认框
