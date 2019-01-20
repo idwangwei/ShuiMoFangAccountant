@@ -23,7 +23,10 @@
             <view class="score-exchange"></view>
         </view>
         <view class="service-item-box">
-            <view wx:for="{{serviceItems}}" wx:key="index">{{item.location}}->{{item.catalogName}}</view>
+            <view wx:for="{{serviceItems}}" wx:key="index">
+                <icon type="{{item.status == 'ENABLE'?'success':'cancel'}}" size="23"></icon>
+                {{item.location}}->{{item.catalogName}}
+            </view>
             <view wx:if="{{!serviceItems.length}}">
                 ...
             </view>

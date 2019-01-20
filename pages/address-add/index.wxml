@@ -1,80 +1,133 @@
 <view class="container">
     <form bindsubmit="bindSave">
         <view style="padding: 30rpx;background-color:#fff">申请人基本信息</view>
+
         <view class="form-box">
-            <view class="row-wrap">
-                <view class="label">联系人</view>
-                <view class="label-right">
-                    <input name="linkMan" class="input" type="text" placeholder="姓名"
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">联系人</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input name="linkMan" class="weui-input" type="text" placeholder="姓名"
                            value="{{userName}}" disabled="{{formDisabled}}"/>
                 </view>
             </view>
-            <view class="row-wrap">
-                <view class="label">手机号码</view>
-                <view class="label-right">
-                    <input name="mobile" class="input" maxlength="11" type="number" placeholder="11位手机号码"
-                           value="{{telNumber}}" disabled="{{formDisabled}}"/>
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">手机号</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input name="mobile" class="weui-input" placeholder="请输入手机号" maxlength="11"
+                           type="number" value="{{telNumber}}" disabled="{{formDisabled}}"/>
+                </view>
+                <view class="weui-cell__ft">
+                    <view class="weui-vcode-btn" bindtap="getPhoneCode"
+                          style="width: 170rpx;text-align:center;">{{getCodeStr}}</view>
                 </view>
             </view>
-            <view class="row-wrap">
-                <view class="label">验证码</view>
-                <view class="label-right">
-                    <input name="code" class="input" maxlength="6" type="number" placeholder="6位验证码"
-                           value="{{codeNumber}}" disabled="{{formDisabled}}"/>
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">验证码</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input name="code" class="weui-input" type="number" placeholder="6位验证码"
+                           maxlength="6" value="{{codeNumber}}" disabled="{{formDisabled}}"/>
                 </view>
             </view>
-            <view class="row-wrap">
-                <view class="label">选择地区</view>
-                <picker mode="multiSelector" disabled="{{formDisabled}}"
-                        bindchange="bindMultiPickerChange"
-                        bindcolumnchange="bindMultiPickerColumnChange"
-                        value="{{multiIndex}}"
-                        range="{{multiArray}}">
 
-                    <view class="picker">
-                        {{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
-                    </view>
-                </picker>
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">选择地区</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker mode="multiSelector" disabled="{{formDisabled}}" class="weui-input"
+                            bindchange="bindMultiPickerChange"
+                            bindcolumnchange="bindMultiPickerColumnChange"
+                            value="{{multiIndex}}"
+                            range="{{multiArray}}">
+
+                        <view class="picker">
+                            {{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+                        </view>
+                    </picker>
+                </view>
             </view>
-            <view class="row-wrap">
-                <view class="label">选择服务项</view>
-                <checkbox-group bindchange="checkboxChange">
-                    <label class="checkbox" wx:for="{{serviceItems}}" wx:key="{{index}}">
-                        <checkbox value="{{item.id}}" checked="{{item.checked}}" disabled="{{formDisabled}}"/>
-                        {{item.name}}
-                    </label>
-                </checkbox-group>
+
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">选择服务项</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <checkbox-group bindchange="checkboxChange" class="weui-input">
+                        <label class="checkbox" wx:for="{{serviceItems}}" wx:key="{{index}}">
+                            <checkbox value="{{item.id}}" checked="{{item.checked}}" disabled="{{formDisabled}}"/>
+                            {{item.name}}
+                        </label>
+                    </checkbox-group>
+                </view>
             </view>
 
         </view>
         <view style="margin-top: 30rpx;padding: 30rpx;background-color:#fff">申请人提交证件</view>
         <view class="form-box">
-            <view class="row-wrap">
-                <view class="label">身份证号</view>
-                <view class="label-right">
-                    <input name="idcard" class="input" type="idcard" placeholder="输入身份证号码"
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">身份证号</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input name="idcard" class="weui-input" type="idcard" placeholder="输入身份证号码"
                            value="{{idCardNum}}" disabled="{{formDisabled}}"/>
                 </view>
             </view>
             <view class="row-wrap upload-pic-box">
-                <view>身份证正面：</view>
-                <image mode="widthFix" class="choose-img" data-type="idcard_0" src="{{idCardSrc[0]}}" bindtap="chooseAndSavePic"></image>
-                <!--<view class="example-img" data-id="1" bindtap="showBigExampleSrc">查看图片示例</view>-->
+                <view>身份证正面</view>
+                <view class="id-card-front-box" data-type="idcard_0" bindtap="chooseAndSavePic">
+                    <image mode="widthFix" class="choose-img"
+                           src="{{idCardSrc[0]}}" wx:if="{{idCardSrc[0]}}"></image>
+                    <view class="upload-img-btn-box" wx:else>
+                        <view>上传身份证正面</view>
+                        <view style="display: flex;align-items: center">
+                            <image src="/images/camera-icon.png" style="width:64rpx;height:64rpx;margin-right:10rpx"></image>
+                            <text>点击上传</text>
+                        </view>
+                    </view>
+                </view>
             </view>
+
             <view class="row-wrap upload-pic-box">
-                <view>身份证反面：</view>
-                <image mode="widthFix" class="choose-img" data-type="idcard_1" src="{{idCardSrc[1]}}" bindtap="chooseAndSavePic"></image>
-                <!--<view class="example-img" data-id="2" bindtap="showBigExampleSrc">查看图片示例</view>-->
+                <view>身份证反面</view>
+                <view class="id-card-front-box" data-type="idcard_1" bindtap="chooseAndSavePic">
+                    <image mode="widthFix" class="choose-img"
+                           src="{{idCardSrc[1]}}" wx:if="{{idCardSrc[1]}}"></image>
+                    <view class="upload-img-btn-box" wx:else>
+                        <view>上传身份反面</view>
+                        <view style="display: flex;align-items: center">
+                            <image src="/images/camera-icon.png" style="width:64rpx;height:64rpx;margin-right:10rpx"></image>
+                            <text>点击上传</text>
+                        </view>
+                    </view>
+                </view>
             </view>
+
             <view class="row-wrap upload-pic-box">
-                <view>从业资格证：</view>
-                <image mode="widthFix" class="choose-img" data-type="certificate" src="{{certificateSrc}}" bindtap="chooseAndSavePic"></image>
-                <!--<view class="example-img" data-id="3" bindtap="showBigExampleSrc">查看图片示例</view>-->
+                <view>从业资格证</view>
+                <view class="id-card-front-box" data-type="certificate" bindtap="chooseAndSavePic">
+                    <image mode="widthFix" class="choose-img"
+                           src="{{certificateSrc}}" wx:if="{{certificateSrc}}"></image>
+                    <view class="upload-img-btn-box" wx:else>
+                        <view>上传从业资格证</view>
+                        <view style="display: flex;align-items: center">
+                            <image src="/images/camera-icon.png" style="width:64rpx;height:64rpx;margin-right:10rpx;"></image>
+                            <text>点击上传</text>
+                        </view>
+                    </view>
+                </view>
             </view>
 
         </view>
-        <view>
-            <button class="weui-btn" type="primary" formType="submit">{{btnStr}}</button>
+
+        <view class="weui-btn-area">
+            <button class="weui-btn" type="primary" bindtap="submit">{{btnStr}}</button>
         </view>
     </form>
 </view>

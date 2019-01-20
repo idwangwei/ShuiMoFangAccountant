@@ -11,8 +11,8 @@ Page({
         userName: '',
         codeNumber: '',
         idCardNum: '',
-        idCardSrc: [defaultSrc, defaultSrc],
-        certificateSrc: defaultSrc, //资格证图片
+        idCardSrc: ['', ''],
+        certificateSrc: '', //资格证图片
         positionalSrc: defaultSrc, //职称图片
         BigExampleSrc: '',
         serviceItems: [], //服务项目
@@ -22,12 +22,14 @@ Page({
             certificate: [], //成功保存到服务器的资格证图片名称
         },
         formDisabled: false,
-        btnStr: '申请'
+        btnStr: '申请',
+        getCodeBtnDisabled:false,
+        getCodeStr:'获取验证码'
     },
 
     onLoad: function (e) {
         wx.showLoading({
-            title: '获取最近一次申请记录',
+            title: '获取最近申请',
             mask: true
         });
         this.initCityData();
@@ -40,11 +42,11 @@ Page({
                 let applyInfo = res[0].data,
                     serviceItemInfo = res[1].data;
                 if (applyInfo.status != 200) {
-                    wx.showToast({title: applyInfo.errMsg});
+                    wx.showToast({title: applyInfo.msg});
                     return;
                 }
                 if (serviceItemInfo.status != 200) {
-                    wx.showToast({title: applyInfo.errMsg});
+                    wx.showToast({title: applyInfo.msg});
                     return;
                 }
 
@@ -135,9 +137,6 @@ Page({
         let code = e.detail.value.code;
         let idcard = e.detail.value.idcard;
 
-        //todo 校验手机验证码
-
-
         if (linkMan == "") {
             wx.showModal({
                 title: '提示',
@@ -146,15 +145,37 @@ Page({
             });
             return
         }
-        if (mobile == "") {
+        if (!mobile.match(/^1\d{10}$/)) {
+            wx.showToast({
+                title: '请输入11位有电话号码',
+                icon:'none'
+            });
+            return;
+        }
+        if (!code.match(/^\d{6}$/)) {
+            wx.showToast({
+                title: '请输入6位有效验证码',
+                icon:'none'
+            });
+            return;
+        }
+        if (!idcard.match(/^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([\\d|x|X]{1})$/)){
+            wx.showToast({
+                title: '请输入有效身份证号',
+                icon:'none'
+            });
+            return;
+        }
+
+        let locations = this.getLocationStr();
+        if(!locations){
             wx.showModal({
-                title: '提示',
-                content: '请填写手机号码',
-                showCancel: false
+                title:'提示',
+                content:'请选择正确的辖区',
+                showCancel:false
             });
             return
         }
-        let locations = `${this.data.multiArray[0][this.data.multiIndex[0]]}-${this.data.multiArray[1][this.data.multiIndex[1]]}-${this.data.multiArray[2][this.data.multiIndex[2]]}`;
         wx.showLoading({
             title: '提交申请中',
             mask: true
@@ -197,7 +218,118 @@ Page({
             })
 
     },
+    getLocationStr:function(){
+        let cityList = citys.cityData[this.data.multiIndex[0]].cityList;
+        let districtList = cityList.length == 0? []:cityList[this.data.multiIndex[1]].districtList;
 
+        if(this.data.multiIndex[2] == 0 && districtList.length!=0){
+            return ''
+        }
+        let provence = this.data.multiArray[0][this.data.multiIndex[0]];
+        let city = this.data.multiArray[1].length ==0 ?'':this.data.multiArray[1][this.data.multiIndex[1]];
+        let district = this.data.multiArray[2].length ==0 ?'':this.data.multiArray[2][this.data.multiIndex[2]];
+        return `${provence}-${city}-${district}`;
+    },
+    getPhoneCode: function (e) {
+        const that = this;
+        if (!this.data.telNumber.match(/1[0-9]{10}$/)) {
+            wx.showModal({
+                title: '提示',
+                content: '请输入正确的手机号码',
+                showCancel: false
+            });
+            return
+        }
+        if (this.data.getCodeBtnDisabled) {
+            return
+        }
+        this.setData({
+            getCodeBtnDisabled: true,
+        });
+        api.fetchRequest('/api/sms', {
+            phone: this.data.telNumber
+        }).then(function (res) {
+            if (res.data.status == 200) {
+                wx.showToast({
+                    title: '短信验证码已下发，请查收',
+                    icon: 'none',
+                    duration: 2000
+                });
+                let timeLimit = 30;
+                let intervalId = setInterval(() => {
+                    if (timeLimit <= 0) {
+                        clearInterval(intervalId);
+                        that.setData({
+                            getCodeStr: '获取验证码',
+                            getCodeBtnDisabled: false
+                        });
+                        return
+                    }
+                    that.setData({
+                        getCodeStr: `${timeLimit}s`,
+                    });
+                    timeLimit--;
+                }, 1000);
+                return
+            }
+            wx.showToast({
+                title: res.data.msg,
+                icon: 'fail',
+                duration: 2000
+            });
+            let timeId = setTimeout(()=>{
+                clearTimeout(timeId);
+                that.setData({
+                    getCodeBtnDisabled: false,
+                });
+
+            },2000);
+        }).catch((res) => {
+            wx.showToast({
+                title: res.data.msg,
+                icon:'fail',
+                duration: 2000
+            });
+            let timeId = setTimeout(()=>{
+                clearTimeout(timeId);
+                that.setData({
+                    getCodeBtnDisabled: false,
+                });
+
+            },2000);
+        })
+
+    },
+    bindCodeInput: function (e) {
+        this.setData({
+            codeNumber: e.detail.value
+        })
+    },
+    validateCode: function (e) {
+        return new Promise((resolve, reject) => {
+            api.fetchRequest(`/api/sms?captcha=${this.data.codeNumber}&phone=${this.data.telNumber}`, {}, "DELETE")
+                .then((res) => {
+                    if (res.data.status == 200) {
+                        resolve();
+                        return
+                    }
+                    reject();
+                    wx.showToast({
+                        title: res.data.msg,
+                        icon:'none'
+                    });
+                })
+                .catch((res) => {
+                    reject();
+                    wx.showToast({
+                        title: res.data.msg,
+                        icon:'none'
+                    });
+
+                })
+        });
+
+    },
 
     setApplyInfo: function () {
 
@@ -241,14 +373,20 @@ Page({
                 name: 'file',
                 formData: {},
                 success: function (res) {
+                    if(res.status!=200){
+                        wx.showToast({
+                            title: '图片上传失败，请重试',
+                            icon:'none',
+                        });
+                        return;
+                    }
                     let fileName = '';
                     try {
                         fileName = JSON.parse(res.data).data.fileName;
                     } catch (e) {
                         wx.showToast({
-                            title: '提示',
-                            content: '图片上传失败',
-                            showCancel: false
+                            title: '图片上传失败，请重试',
+                            icon:'none',
                         });
                         return
                     }
@@ -284,8 +422,7 @@ Page({
                 fail: function (err) {
                     wx.showToast({
                         title: '图片上传失败',
-                        content: err.errMsg,
-                        showCancel: false
+                        icon:'none'
                     });
                 }
             });
@@ -296,7 +433,7 @@ Page({
             sourceType: ['album', 'camera'],
             success(res) {
                 let picSrc = res.tempFilePaths[0];
-                let type = e.target.dataset.type;
+                let type = e.currentTarget.dataset.type;
                 if (type.indexOf('idcard') != -1) {
                     type = 'idcard'
                 }

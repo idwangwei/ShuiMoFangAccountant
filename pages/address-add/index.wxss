@@ -17,11 +17,11 @@ page{
     margin-left: 30rpx;
     border-bottom: 1rpx solid #eee;
     display: flex;
-    font-size: 28rpx;
+    font-size: 34rpx;
     /*justify-content: space-between;*/
 }
 .row-wrap .label{
-    width: 160rpx;
+    width: 210rpx;
     color: #000
 }
 .row-wrap .label-right{
@@ -65,11 +65,11 @@ button[type="default"]{
     margin-left:30rpx;
     border-bottom: 1rpx solid #eee;
     display: flex;
-    font-size: 28rpx;
+    font-size: 34rpx;
 }
 .addr-details .label{
     margin:auto 0 auto 0;
-    width: 160rpx;
+    width: 210rpx;
     color: #000
 }
 .addr-details textarea{
@@ -92,9 +92,26 @@ picker {
     display: flex;
     flex-direction: column;
 }
-.upload-pic-box image{
-    margin-left: 170rpx;
+.id-card-front-box{
+    border-radius: 30rpx;
+    border: 4rpx dashed #b8b8b8;
+    width: 600rpx;
+    height: 400rpx;
+    margin-left: 50rpx;
 }
+
+.upload-pic-box image{
+    width: 100%;
+    height: 100%;
+}
+.upload-img-btn-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+}
+
 checkbox-group{
     display: flex;
     flex-direction: column;

@@ -47,8 +47,10 @@
     padding-right: 30rpx;
 }
 .my-item .phone-str image{
-    width: 100rpx;
-    height: 100rpx;
+    width: 60rpx;
+    height: 60rpx;
+    margin-right:20rpx;
+
 }
 
 .my-item .phone-str text{
