@@ -53,7 +53,7 @@ Page({
                         title: '错误',
                         content: '您的积分不足，无法支付',
                         showCancel: false
-                    })
+                    });
                     return;
                 }
                 if (money <= 0) {
@@ -81,7 +81,7 @@ Page({
     onLoad: function (options) {
         let that = this;
         api.fetchRequest(
-            `/api/order/custom/${app.globalData.userInfo.id}/orders`,
+            `/api/order/serve/orders`,
             {
                 limit: this.data.queryLimit,
                 pageNum: this.data.queryPageNum,

@@ -1,4 +1,4 @@
-var app = getApp();
+const app = getApp();
 const api = require('../../utils/request.js');
 
 Page({
@@ -15,107 +15,142 @@ Page({
             location: '四川省-成都市-锦江区',
             status: 'SERVING',
             prodImageUri: '/images/goods-default-summary-pic.png',
-            items: [
-                {
-                    desc: '第1-3月',
-                    serverItems: [
-                        {desc: '第1-3月记账', status: 2, range: 3},
-                        {desc: '第1-3月个税申报', status: 2, range: 3},
-                        {desc: '第1-3月附加税申报', status: 2, range: 3},
-                        {desc: '第1-3月增值税申报', status: 2, range: 3},
-                        {desc: '第1-3月企业所得税申报', status: 2, range: 3},
-                        {desc: '工商年报', status: 0, range: 1},
-                        {desc: '企业所得税年报', status: 0, range: 1},
-                    ],
-
-                },{
-                    desc: '第4-6月',
-                    serverItems: [
-                        {desc: '第4-6月记账', status: 0, range: 3},
-                        {desc: '第4-6月个税申报', status: 0, range: 3},
-                        {desc: '第4-6月附加税申报', status: 0, range: 3},
-                        {desc: '第4-6月增值税申报', status: 0, range: 3},
-                        {desc: '第4-6月企业所得税申报', status: 0, range: 3},
-                        {desc: '工商年报', status: 0, range: 1},
-                        {desc: '企业所得税年报', status: 0, range: 1},
-                    ],
-
-                },{
-                    desc: '第7-9月',
-                    serverItems: [
-                        {desc: '第7-9月记账', status: 0, range: 3},
-                        {desc: '第7-9月个税申报', status: 0, range: 3},
-                        {desc: '第7-9月附加税申报', status: 0, range: 3},
-                        {desc: '第7-9月增值税申报', status: 0, range: 3},
-                        {desc: '第7-9月企业所得税申报', status: 0, range: 3},
-                        {desc: '工商年报', status: 0, range: 1},
-                        {desc: '企业所得税年报', status: 0, range: 1},
-                    ],
-
-                },{
-                    desc: '第10-12月',
-                    serverItems: [
-                        {desc: '第10-12月记账', status: 0, range: 3},
-                        {desc: '第10-12月个税申报', status: 0, range: 3},
-                        {desc: '第10-12月附加税申报', status: 0, range: 3},
-                        {desc: '第10-12月增值税申报', status: 0, range: 3},
-                        {desc: '第10-12月企业所得税申报', status: 0, range: 3},
-                        {desc: '工商年报', status: 0, range: 1},
-                        {desc: '企业所得税年报', status: 0, range: 1},
-                    ],
-
-                },
-
-            ],
-            /*items:[{
-                desc: '第1-3月',
-                serverItems: [
-                    {desc: '第1-3月记账', status: 2, range: 3},
-                    {desc: '第1-3月个税申报', status: 2, range: 3},
-                    {desc: '第1-3月附加税申报', status: 2, range: 3},
-                    {desc: '第1-3月增值税申报', status: 2, range: 3},
-                    {desc: '第1-3月企业所得税申报', status: 2, range: 3},
-                    {desc: '工商年报', status: 0, range: 1},
-                    {desc: '企业所得税年报', status: 0, range: 1},
-                ],
-            }]*/
+            items: [],
         },
     },
     onLoad: function () {
-        let activeIndex = this.data.activeIndex;
-        let tabs = this.data.orderDetail.items;
-        let sliderWidth = app.globalData.screenWidth / tabs.length;// 需要设置slider的宽度，用于计算中间位置
-        this.setData({
-
-            sliderLeft: (app.globalData.screenWidth / tabs.length - sliderWidth) / 2,
-            sliderOffset: app.globalData.screenWidth / tabs.length * activeIndex,
-            sliderWidth: 2 * sliderWidth,
-        });
-
+        let orderDetail = app.globalData.selectOrderInfo;
 
         //获取订单服务详情
-        api.fetchRequest('/api/order/details')
+        api.fetchRequest(`/api/order/task/${orderDetail.id}`)
             .then((res) => {
-
+                if (res.data.status != 200) {
+                    wx.showToast({
+                        title: res.msg,
+                        icon: 'none'
+                    });
+                    return;
+                }
+                orderDetail.items = res.data.data;
+                this.setData({
+                    orderDetail
+                })
             })
+
             .catch((res) => {
-
+                wx.showToast({
+                    title: res.msg,
+                    icon: 'none'
+                })
             })
     },
-    tabClick: function (e) {
-
-        this.setData({
-            sliderOffset: e.currentTarget.offsetLeft,
-            activeIndex: e.currentTarget.id
-        });
-
-    },
-    sliderChange:function (e) {
+    sliderChange: function (e) {
         let idx = e.target.dataset.idx;
         let orderDetail = this.data.orderDetail;
-        orderDetail.items[this.data.activeIndex].serverItems[idx].status = e.detail.value;
+        orderDetail.items[idx].progress = e.detail.value;
         this.setData({
             orderDetail
         })
+    },
+    clickItem: function (e) {
+        let orderDetail = this.data.orderDetail;
+        let idx = e.currentTarget.dataset.idx;
+        let serverItem = orderDetail.items[idx];
+        let that = this;
+        if(serverItem.status == 'NOTSET'){
+            wx.showModal({
+                title:`确定添加【${serverItem.prodTaskName}】`,
+                success:(res)=>{
+                    if(res.confirm){
+                        that.addOrderTask(e);
+                    }
+                }
+            });
+            return
+        }
+        serverItem.clicked = !serverItem.clicked;
+        this.setData({
+            orderDetail
+        })
+    },
+    remarkChange:function(e){
+        let idx = e.target.dataset.idx;
+        let orderDetail = this.data.orderDetail;
+        orderDetail.items[idx].remark = e.detail.value;
+        this.setData({
+            orderDetail
+        })
+    },
+    updateOrderTask: function (e) {
+        let orderId = this.data.orderDetail.id;
+        let orderTask = this.data.orderDetail.items[e.target.dataset.idx];
+        let orderTaskJson = {
+            progress:orderTask.progress,
+            remark:orderTask.remark
+        };
+
+        let query = `?orderTaskJson=${encodeURIComponent(JSON.stringify(orderTaskJson))}`;
+        api.fetchRequest(`/api/order/task/${orderId}/${orderTask.id}${query}`, {}, "PUT")
+            .then((res) => {
+                if (res.data.status != 200) {
+                    wx.showToast({
+                        title: res.msg,
+                        icon: 'none'
+                    });
+                    return;
+                }
+                wx.showToast({
+                    title: '进度更新成功',
+                    icon: 'none'
+                });
+            })
+            .catch(() => {
+                wx.showToast({
+                    title: res.msg,
+                    icon: 'none'
+                });
+
+            })
+    },
+
+    addOrderTask:function(e){
+        let orderDetail = this.data.orderDetail;
+        let orderId = orderDetail.id;
+        let orderTask = orderDetail.items[e.currentTarget.dataset.idx];
+        let that = this;
+        api.fetchRequest(`/api/order/task/${orderId}?prodTaskId=${orderTask.prodTaskId}`, {}, "POST")
+            .then((res) => {
+                if (res.data.status != 200) {
+                    wx.showToast({
+                        title: res.msg,
+                        icon: 'none'
+                    });
+                    return;
+                }
+                orderTask.id = res.data;
+                orderTask.status = 'DOING';
+
+                that.setData({
+                    orderDetail
+                });
+                wx.showToast({
+                    title: '新增成功',
+                    icon: 'none'
+                });
+            })
+            .catch(() => {
+                wx.showToast({
+                    title: res.msg,
+                    icon: 'none'
+                });
+            })
+
+    },
+    orderTaskDone:function (e) {
+        
+    },
+    getOrderScore:function (e) {
+
     }
+
 });

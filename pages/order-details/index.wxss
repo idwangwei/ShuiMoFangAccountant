@@ -4,38 +4,36 @@ page,
     height: 100%;
     background-color: #eee;
 }
-.page__bd{
-    padding-bottom: 0;
-}
-.weui-tab__content{
-    padding-top: 60px;
-    text-align: center;
-}
+
 .server-item-box{
     margin: 30rpx;
     text-align: start;
 }
 .goods-summery-box{
-    position: absolute;
     background-color: #fff;
     height: 180rpx;
     z-index: 500;
     width: 100%;
 
+
+
 }
-.weui-navbar{
-    top:180rpx;
-    background-color: #fff;
+.goods-summery-box .weui-media-box__hd_in-appmsg{
+    width:180rpx;
+    height:100rpx;
+
 }
-.process-bar-box{
-    display: flex;
-}.process-bar-box slider{
+
+.process-edit-box{
+    /*display: flex;*/
+    /*justify-content: space-between;*/
+    /*align-items: center;*/
+    font-size: 28rpx;
+}
+.process-edit-box .edit-box{
      flex: 1;
+
 }
- .weui-tab__panel{
-     padding-top: 300rpx;
- }
- .weui-tab__content{
-     padding-top: 0;
-     padding-bottom: 200rpx;
- }
+.progress-box{
+    width: 100%;
+}

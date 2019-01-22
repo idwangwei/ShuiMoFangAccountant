@@ -33,17 +33,21 @@
         </view>
     </view>
     <view class="my-score">
-        <view class="score-title">
-            <text>我的金币：{{scoreNumber}}</text>
+        <view class="score-title" bindtap="toGoldExchange">
+            <text>我的金币</text>
             <view class="score-exchange">
                 <text>兑换</text>
                 <text class="arrow-right"></text>
             </view>
         </view>
         <view class="score-item-box">
-            <view class="score-item">
+            <view class="score-item" bindtap="toGoldExchangeRule">
                 <image src="/images/icon-cart.png" mode="widthFix"></image>
                 <view>金币兑换规则</view>
+            </view>
+            <view class="score-item" bindtap="toGoldExchangeDetail">
+                <image src="/images/icon-cart.png" mode="widthFix"></image>
+                <view>金币明细</view>
             </view>
         </view>
     </view>

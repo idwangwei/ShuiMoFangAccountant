@@ -24,7 +24,9 @@ Page({
         formDisabled: false,
         btnStr: '申请',
         getCodeBtnDisabled:false,
-        getCodeStr:'获取验证码'
+        applyStatus:'',
+        getCodeStr:'获取验证码',
+        applyId:''
     },
 
     onLoad: function (e) {
@@ -66,7 +68,8 @@ Page({
                     name: applyInfo.data.name,
                     offers: applyInfo.data.offersStr.split(','),
                     phone: applyInfo.data.phone,
-                    status: applyInfo.data.status
+                    status: applyInfo.data.status,
+                    applyId:applyInfo.data.applyId
                 };
 
                 let {multiIndex, multiArray} = this.parseLocation(lastApplyInfo.locations[0]);
@@ -75,6 +78,7 @@ Page({
                 }
 
                 this.setData({
+                    applyId:lastApplyInfo.applyId,
                     serviceItems: serviceItemInfo.data,
                     telNumber: lastApplyInfo.phone,
                     idCardNum: lastApplyInfo.idNumber,
@@ -85,7 +89,8 @@ Page({
                     },
                     selectedServiceItems: lastApplyInfo.offers,  //applyInfo.offersStr.split(','),
                     formDisabled: lastApplyInfo.status == 'APPLYING',  //applyInfo.status
-                    btnStr:lastApplyInfo.status == 'APPLYING'?'审核中':'再次申请',
+                    applyStatus:lastApplyInfo.status,
+                    btnStr:lastApplyInfo.status == 'APPLYING'?'审核中':'修改申请',
                     multiIndex,
                     multiArray,
                 });
@@ -159,7 +164,7 @@ Page({
             });
             return;
         }
-        if (!idcard.match(/^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([\\d|x|X]{1})$/)){
+        if (!idcard.match(/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([\d|x|X]{1})$/)){
             wx.showToast({
                 title: '请输入有效身份证号',
                 icon:'none'
@@ -191,8 +196,9 @@ Page({
             phone: mobile,
             status: 'APPLYING'
         };
-        api.fetchRequest('/api/apply/offer', paramData, 'POST', 0, {'content-type': 'application/x-www-form-urlencoded'})
-            .then(function (res) {
+        // let requestPromise = this.data.applyStatus !== 'DONE'?this.newApply(paramData):this.updateApply(paramData,this.data.applyId);
+        let requestPromise = this.newApply(paramData);
+        requestPromise.then(function (res) {
                 wx.hideLoading();
                 if (res.data.status != 200) {
                     wx.showModal({
@@ -212,12 +218,33 @@ Page({
                 wx.hideLoading();
                 wx.showModal({
                     title: '提交失败',
-                    content: res.errMsg,
+                    content: res.msg,
                     showCancel: false
                 });
             })
 
     },
+
+    newApply:function(paramData){
+        return api.fetchRequest('/api/apply/offer'
+            , paramData
+            , 'POST'
+            , 0
+            , {'content-type': 'application/x-www-form-urlencoded'}
+            )
+    },
+    updateApply:function(paramData,applyId){
+        let query = "?";
+        for(let item in paramData){
+            query+=`${item}=${encodeURIComponent(paramData[item])}&`
+        }
+        return api.fetchRequest(`/api/apply/offer/${applyId}${query}`
+            , {}
+            , 'PUT'
+            // , {'content-type': 'application/x-www-form-urlencoded'}
+        )
+    },
+
     getLocationStr:function(){
         let cityList = citys.cityData[this.data.multiIndex[0]].cityList;
         let districtList = cityList.length == 0? []:cityList[this.data.multiIndex[1]].districtList;
@@ -286,7 +313,7 @@ Page({
             },2000);
         }).catch((res) => {
             wx.showToast({
-                title: res.data.msg,
+                title: res.msg,
                 icon:'fail',
                 duration: 2000
             });
@@ -322,7 +349,7 @@ Page({
                 .catch((res) => {
                     reject();
                     wx.showToast({
-                        title: res.data.msg,
+                        title: res.msg,
                         icon:'none'
                     });
 

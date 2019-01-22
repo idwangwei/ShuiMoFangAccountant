@@ -3,7 +3,6 @@ const api = require('../../utils/request.js');
 const CONFIG = require('../../config.js');
 Page({
     data: {
-        scoreNumber: 0,
         serviceItems: []
     },
     onLoad() {
@@ -35,10 +34,22 @@ Page({
             })
         }
     },
-
     toApplyPage: function (e) {
         wx.navigateTo({url: "/pages/address-add/index"})
     },
 
+    toGoldExchange:function(e){
+        wx.navigateTo({url: "/pages/score-exchange/index"})
 
-})
+    },
+
+    toGoldExchangeRule:function (e) {
+        wx.navigateTo({url: "/pages/address-add/index"})
+
+    },
+    toGoldExchangeDetail:function (e) {
+        wx.navigateTo({url: "/pages/score-record/index"})
+
+    }
+
+});

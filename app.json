@@ -1,20 +1,14 @@
 {
   "pages": [
-    "pages/order-details/index",
     "pages/start/start",
     "pages/index/index",
     "pages/goods-details/index",
-    "pages/shop-cart/index",
     "pages/to-pay-order/index",
-    "pages/select-address/index",
     "pages/order-list/index",
+    "pages/order-details/index",
     "pages/my/index",
-    "pages/mycoupons/index",
-    "pages/notice/show",
-    "pages/recharge/index",
-    "pages/withdraw/index",
-    "pages/kanjia/index",
-    "pages/score-excharge/index",
+    "pages/score-record/index",
+    "pages/score-exchange/index",
     "pages/address-add/index"
   ],
   "window": {

@@ -1,0 +1,25 @@
+<view class="container">
+    <form bindsubmit="bindSave">
+        <view class="form-box">
+            <view class="exchange-title">
+                <view style="font-size: 40rpx;">兑换</view>
+                <view style="font-size: 28rpx;color: #4b4b4b">
+                    兑换仅限每月2-4号，查看<text style="color: #ff9444;">兑换规则</text>
+                </view>
+            </view>
+
+
+            <view class="row-wrap gold-num-box">
+                <text>￥</text>
+                <input name="amount" class="input" bindinput="bindInput" value="{{exchangeNum}}"
+                       confirm-type="done" type="number" placeholder=""/>
+            </view>
+            <view class="row-wrap remark-box">
+                <text style="color: #ff4009">可兑换金额{{userInfo.score}}</text>
+                <text style="margin-right:30rpx;color: #ff9444" bindtap="exchangeAll">全部兑换</text>
+            </view>
+        </view>
+        <button type="warn" class="save-btn" formType="submit" disabled="{{exchangeDisabled}}">立即兑换</button>
+        <button type="default" class="cancel-btn" bindtap="bindCancel">取消</button>
+    </form>
+</view>
