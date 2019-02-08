@@ -53,11 +53,7 @@ swiper-item image {
   width: 100%;
   background-color: #fff;
 }
-::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-  color: transparent;
-}
+
 .type-box{
   width:160rpx;
   box-sizing: content-box;
@@ -82,7 +78,7 @@ swiper-item image {
   padding: 24rpx 0;
 }
 .goods-box{
-  width: 360rpx;
+  width: 370rpx;
   /*height: 472rpx;*/
   background-color: #fff;
   overflow: hidden;
@@ -92,8 +88,8 @@ swiper-item image {
   justify-content:space-between;
 }
 .goods-box .img-box{
-  width: 360rpx;
-  height: 200rpx;
+  width: 370rpx;
+  height: 206rpx;
   overflow: hidden;
 }
 .goods-box .img-box image{
@@ -113,7 +109,7 @@ swiper-item image {
   width: 100%;
   overflow: hidden;
   font-size: 24rpx;
-  color:#e64340;
+  color:#e85654;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -124,6 +120,7 @@ swiper-item image {
 .goods-price button{
   padding: 0 16rpx;
   margin: 0;
+  background-color: #e85654;
 }
 .no-more-goods{
   text-align: center;

@@ -14,3 +14,23 @@
 page{
   min-height: 100%;
 }
+.arrow-right{
+  display: inline-block;
+  border-right: 1rpx solid #626262;
+  border-top: 1rpx solid #626262;
+  width:20rpx;
+  height:20rpx;
+  transform:rotate(45deg);
+
+}
+.display-flex-between{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}

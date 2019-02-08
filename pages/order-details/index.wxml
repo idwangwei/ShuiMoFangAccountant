@@ -12,23 +12,26 @@
     </view>
 
     <view style="font-size: 40rpx;padding: 30rpx;">服务项：</view>
+
     <view class="server-item-box"
           wx:for="{{orderDetail.items}}"
           wx:for-item="item" wx:for-index="idx" wx:key="*this">
+
         <view data-idx="{{idx}}" bindtap="clickItem"
               style="display: flex;justify-content: space-between;align-items: center">
-            <view style="flex:1">{{item.prodTaskName}}【{{item.progress+'%'}}】</view>
-            <button wx:if="{{item.status == 'NOTSET'}}"
-                    class="mini-btn" type="primary" size="mini">新增</button>
+            <view style="flex:1">{{item.prodTaskName}}</view>
+            <!--<button wx:if="{{item.status == 'NOTSET'}}"-->
+                    <!--class="mini-btn" type="primary" size="mini">新增</button>-->
         </view>
+
         <view class="process-edit-box" hidden="{{!item.clicked}}">
             <view class="edit-box">
-                <view class="progress-box">
-                    <text>本项进度</text>
-                    <slider bindchange="sliderChange" data-idx="{{idx}}"
-                            min="0" max="100" show-value value="{{item.progress}}"/>
+                <!--<view class="progress-box">-->
+                    <!--<text>本项进度</text>-->
+                    <!--<slider bindchange="sliderChange" data-idx="{{idx}}"-->
+                            <!--min="0" max="100" show-value value="{{item.progress}}"/>-->
 
-                </view>
+                <!--</view>-->
 
                 <view class="weui-cells weui-cells_after-title remark-box">
                     <view class="weui-cell">
@@ -47,11 +50,11 @@
             </view>
 
             <button class="weui-btn" data-idx="{{idx}}" bindtap="updateOrderTask"
-                    type="default" plain="true">确定</button>
+                    type="default" plain="true">更新</button>
 
         </view>
     </view>
-    <button class="weui-btn" type="primary" bindtap="getOrderScore">申请积分</button>
-    <button class="weui-btn" type="default" bindtap="orderTaskDone">订单完成</button>
+    <!--<button class="weui-btn" type="primary" bindtap="getOrderScore">申请积分</button>-->
+    <!--<button class="weui-btn" type="default" bindtap="orderTaskDone">订单完成</button>-->
 
 </view>

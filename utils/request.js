@@ -1,7 +1,8 @@
 const CONFIG = require('../config.js');
 const REQUEST_CACHE = [];
 // const API_BASE_URL = 'http://47.96.11.208';
-const API_BASE_URL = 'http://192.168.1.253';
+const API_BASE_URL = 'http://47.105.158.239';
+// const API_BASE_URL = 'http://192.168.1.253';
 // const API_BASE_URL = 'https://api.it120.cc';
 /**
  * 简单请求封装
@@ -11,7 +12,7 @@ const API_BASE_URL = 'http://192.168.1.253';
  * cache: 缓存时长(单位: 秒)
  */
 function FetchRequest(url, data, method = 'GET', cache = 0, header = {}, noSubDomain = true) {
-    var request_key = GetStorageKey(url, method);
+    let request_key = GetStorageKey(url, method);
     if (cache) {
         return new Promise(Storage);
     } else {
@@ -26,7 +27,7 @@ function FetchRequest(url, data, method = 'GET', cache = 0, header = {}, noSubDo
             key: request_key,
             success: StorageSuccess,
             fail: StorageError
-        })
+        });
 
         /**
          * 成功回调
@@ -189,7 +190,7 @@ Promise.prototype.finally = function (callback) {
             );
         }
     );
-}
+};
 
 module.exports = {
     fetchRequest: FetchRequest,

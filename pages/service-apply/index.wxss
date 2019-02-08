@@ -37,10 +37,6 @@ page{
 .row-wrap .right-box{
     margin-right: 30rpx; 
 }
-.arrow-right{
-    width: 15rpx;
-    height: 24rpx;
-}
 .save-btn,
 .cancel-btn{
     width: 690rpx;
@@ -92,7 +88,7 @@ picker {
     display: flex;
     flex-direction: column;
 }
-.id-card-front-box{
+.id-card-box{
     border-radius: 30rpx;
     border: 4rpx dashed #b8b8b8;
     width: 600rpx;

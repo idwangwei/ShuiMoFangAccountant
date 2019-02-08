@@ -18,6 +18,7 @@ Page({
             items: [],
         },
     },
+
     onLoad: function () {
         let orderDetail = app.globalData.selectOrderInfo;
 
@@ -44,6 +45,7 @@ Page({
                 })
             })
     },
+
     sliderChange: function (e) {
         let idx = e.target.dataset.idx;
         let orderDetail = this.data.orderDetail;
@@ -52,6 +54,7 @@ Page({
             orderDetail
         })
     },
+
     clickItem: function (e) {
         let orderDetail = this.data.orderDetail;
         let idx = e.currentTarget.dataset.idx;
@@ -73,6 +76,7 @@ Page({
             orderDetail
         })
     },
+
     remarkChange:function(e){
         let idx = e.target.dataset.idx;
         let orderDetail = this.data.orderDetail;
@@ -81,6 +85,7 @@ Page({
             orderDetail
         })
     },
+
     updateOrderTask: function (e) {
         let orderId = this.data.orderDetail.id;
         let orderTask = this.data.orderDetail.items[e.target.dataset.idx];
@@ -146,9 +151,11 @@ Page({
             })
 
     },
+
     orderTaskDone:function (e) {
         
     },
+
     getOrderScore:function (e) {
 
     }

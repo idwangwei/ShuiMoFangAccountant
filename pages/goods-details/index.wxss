@@ -99,51 +99,26 @@
   box-shadow:0 0 8rpx 0 ;
   justify-content: space-between;
 }
-.footer-box .contact {
+.custom-service-box{
+  width: 80rpx;
+  height: 80rpx;
+  margin-left: 20rpx;
   position: relative;
-  width: 120rpx;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /*line-height: 100rpx;
-  text-align: center;
-  padding-top: 26rpx;*/
-  font-size: 20rpx;
-  color: #008000;
-  box-sizing: border-box;
-  background: url("https://cdn.it120.cc/images/weappshop/kefu.png") no-repeat center 21rpx;
-  background-size: 55rpx auto;
 }
-.footer-box .shop-cart-btn {
-  position: relative;
-  width: 135rpx;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  font-size: 20rpx;
-  color: #acacb7;
-  box-sizing: border-box;
-  background: url("https://cdn.it120.cc/images/weappshop/cart.png") no-repeat center 21rpx;
-  background-size: 44rpx auto;
-}
-.footer-box .shop-cart-btn .shop-num{
+.custom-service-btn{
   position: absolute;
-  color:#e64340;
-  left: 85rpx;
-  top:10rpx;
-}
-.footer-box .join-shop-cart{
-  text-align: center;
-  width: 250rpx;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
   height: 100%;
-  line-height: 100rpx;
-  background-color: #ff6850;
-  color:#fff;
-  font-size: 34rpx;
 }
+.custom-service-img{
+  width: 100%;
+  height: 100%;
+}
+
+
 .footer-box .now-buy{
   text-align: center;
   height: 100%;

@@ -67,14 +67,7 @@
     margin-bottom:100rpx;
 
 }
-.arrow-right{
-    border-right: 1rpx solid #626262;
-    border-top: 1rpx solid #626262;
-    width:30rpx;
-    height:30rpx;
-    transform:rotate(45deg);
 
-}
 .score-exchange{
     display: flex;
     align-items: center;
@@ -112,7 +105,6 @@
 .my-service-item{
     width:100%;
     background-color:#fff;
-    margin:30rpx;
 }
 .service-item-title{
     height: 100rpx;
@@ -131,3 +123,4 @@
 page{
     background-color: #eee;
 }
+image{display: block}

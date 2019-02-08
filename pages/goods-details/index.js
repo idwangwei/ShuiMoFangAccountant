@@ -197,7 +197,7 @@ Page({
     onShareAppMessage: function () {
         return {
             title: this.data.goodsDetail.name,
-            path: '/pages/goods-details/index?id=' + this.data.goodsDetail.id + '&inviter_id=' + wx.getStorageSync('uid'),
+            path: '/pages/goods-details/index?goodsId=' + this.data.goodsDetail.id + '&inviterId=' + app.globalData.userInfo.id,
             success: function (res) {
                 // 转发成功
             },
@@ -245,5 +245,13 @@ Page({
         this.setData({
             userName: e.detail.value
         })
-    }
+    },
+    makePhoneCall: function (e) {
+        wx.makePhoneCall({
+            phoneNumber: "02886198523",
+            success: function (res) {
+                console.log("成功拨打电话")
+            }
+        })
+    },
 });

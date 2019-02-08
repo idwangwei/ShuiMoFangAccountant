@@ -15,20 +15,28 @@
     </view>
 
     <view class="goods-des-info">
-        <view class="label-title">商品介绍</view>
+        <view class="label-title">服务介绍</view>
         <view class="goods-text">
             <image src="{{goodsDetail.textImg}}" mode="widthFix"></image>
         </view>
     </view>
 
     <view class="footer-box">
-        <view class="contact">
-            <contact-button style="opacity:0;position:absolute;" type="default-dark" session-from="weapp"
-                            size="27"></contact-button>
-            <view style='position:absolute;bottom:10rpx;'> 客服</view>
+        <view class=""
+              style="padding:4rpx 0;flex: 1;height: 100%;display: flex;flex-direction: column;align-items: center" bindtap="makePhoneCall">
+            <image src="/images/dianhua.png" mode="aspectFit"
+                   class="" style="flex: 1;width: 100%;"/>
+            <text style="font-size:26rpx;">服务热线</text>
         </view>
 
-        <view class="now-buy" bindtap="bindGuiGeTap">立即下单</view>
+        <view class=""
+              style="padding:4rpx 0;flex: 1;height: 100%;display: flex;flex-direction: column;align-items: center;position: relative">
+            <button open-type="contact" bindcontact="handleContact" class="custom-service-btn"></button>
+            <image src="/images/weixin.png" mode="aspectFit" class="" style="flex: 1;width: 100%;"/>
+            <text style="font-size:26rpx;">在线咨询</text>
+        </view>
+
+        <view class="now-buy" bindtap="bindGuiGeTap" style="flex: 2">立即接单</view>
     </view>
 
 </view>

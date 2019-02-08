@@ -34,7 +34,7 @@ Page({
         })
     },
     tapBanner: function (e) {
-        getApp().globalData.selectGoodsInfo = this.data.goods.find(item=>item.id==e.currentTarget.dataset.id);
+        getApp().globalData.selectGoodsInfo = this.data.goods.find(item => item.id == e.currentTarget.dataset.id);
         wx.navigateTo({
             url: "/pages/goods-details/index?id=" + e.currentTarget.dataset.id
         })
@@ -49,54 +49,63 @@ Page({
          * 示例：
          * 调用接口封装方法
          */
+    },
+    onShow: function () {
         this.getGoodsList();
     },
-
     getGoodsList: function () {
         const that = this;
         wx.showLoading({
             title: '加载中',
             mask: true
         });
-        api.fetchRequest('/api/products').then(function (res) {
-            wx.hideLoading();
-            if (res.data.status !== 200) {
-                let newData = {};
-                newData.goods = [];
-                that.setData(newData);
-                return
-            }
-            let goods = [];
-            for (let i = 0; i < res.data.data.length; i++) {
-                let item = res.data.data[i];
-                goods.push({
-                    id: item.id,
-                    name: item.name,
-                    titleImage: item.titleImage ? item.titleImage : '/images/goods-default-summary-pic.png',
-                    descImage: item.descImage ? item.descImage : '/images/goods-default-details-pic.png',
-                    priceType: item.priceType,
-                    descPrice: item.descPrice,
-                    creditType: item.creditType,
-                    status: item.status,
-                    isShow:item.status == 'ONLINE',
-                })
-            }
-            that.setData({
-                goods: goods,
-            });
-        })
+        api.fetchRequest('/api/products')
+            .then(function (res) {
+                wx.hideLoading();
+                if (res.data.status !== 200) {
+                    let newData = {};
+                    newData.goods = [];
+                    that.setData(newData);
+                    return
+                }
+                let goods = [];
+                for (let i = 0; i < res.data.data.length; i++) {
+                    let item = res.data.data[i];
+                    goods.push({
+                        id: item.id,
+                        name: item.name,
+                        titleImage: item.titleImage ? item.titleImage : '/images/goods-default-summary-pic.png',
+                        descImage: item.descImage ? item.descImage : '/images/goods-default-details-pic.png',
+                        priceType: item.priceType,
+                        descPrice: item.descPrice,
+                        creditType: item.creditType,
+                        status: item.status,
+                        isShow: item.status == 'ONLINE',
+                    })
+                }
+                that.setData({
+                    goods: goods,
+                });
+            })
+            .catch(() => {
+                wx.hideLoading();
+            })
     },
 
     onShareAppMessage: function () {
+
         return {
             title: CONFIG.shareProfile,
-            path: '/pages/index/index',
+            path: `/pages/index/index?inviterId=${this.data.userInfo.id}`,
             imageUrl: '/images/share_img.png',
             success: function (res) {
+                console.log(res)
                 // 转发成功
             },
             fail: function (res) {
                 // 转发失败
+                console.log(res)
+
             }
         }
     },
@@ -108,7 +117,7 @@ Page({
     toSearch: function (e) {
         let nameLike = e.detail.value;
         let goods = this.data.goods;
-        for(let item of goods){
+        for (let item of goods) {
             item.isShow = item.name.indexOf(nameLike) != -1
         }
         this.setData({
@@ -127,10 +136,16 @@ Page({
     },
     makePhoneCall: function (e) {
         wx.makePhoneCall({
-            phoneNumber: "18280377915",
+            phoneNumber: "02886198523",
             success: function (res) {
                 console.log("成功拨打电话")
             }
         })
+    },
+    showCompanyInfo: function (e) {
+        wx.navigateTo({
+            url: "/pages/company/index"
+        })
+
     }
 });

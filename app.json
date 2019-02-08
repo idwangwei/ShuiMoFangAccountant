@@ -1,15 +1,19 @@
 {
   "pages": [
+    "pages/service-apply/index",
     "pages/start/start",
     "pages/index/index",
     "pages/goods-details/index",
-    "pages/to-pay-order/index",
     "pages/order-list/index",
     "pages/order-details/index",
     "pages/my/index",
     "pages/score-record/index",
     "pages/score-exchange/index",
-    "pages/address-add/index"
+    "pages/score-rule/index",
+    "pages/company/index",
+    "pages/share-record/index",
+    "pages/share-rule/index",
+    "pages/share-poster/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -17,7 +21,6 @@
     "navigationBarTextStyle": "white",
     "onReachBottomDistance": 50,
     "navigationBarTitleText": "税魔方"
-
   },
   "tabBar": {
     "color": "#6e6d6b",
@@ -31,12 +34,7 @@
         "selectedIconPath": "images/tab-bar/home-on.png",
         "text": "首页"
       },
-      {
-        "pagePath": "pages/order-list/index",
-        "iconPath": "images/tab-bar/order-off.png",
-        "selectedIconPath": "images/tab-bar/order-on.png",
-        "text": "订单"
-      },
+
       {
         "pagePath": "pages/my/index",
         "iconPath": "images/tab-bar/my-off.png",
@@ -45,7 +43,5 @@
       }
     ]
   },
-  "navigateToMiniProgramAppIdList": [
-
-  ]
+  "navigateToMiniProgramAppIdList": []
 }

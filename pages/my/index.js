@@ -35,7 +35,7 @@ Page({
         }
     },
     toApplyPage: function (e) {
-        wx.navigateTo({url: "/pages/address-add/index"})
+        wx.navigateTo({url: "/pages/service-apply/index"})
     },
 
     toGoldExchange:function(e){
@@ -44,11 +44,32 @@ Page({
     },
 
     toGoldExchangeRule:function (e) {
-        wx.navigateTo({url: "/pages/address-add/index"})
+        wx.navigateTo({url: "/pages/score-rule/index"})
 
     },
     toGoldExchangeDetail:function (e) {
         wx.navigateTo({url: "/pages/score-record/index"})
+
+    },
+    gotoOrderList:function (e) {
+        let type = e.currentTarget.dataset.type;
+        wx.navigateTo({
+            url:`/pages/order-list/index?type=${type}`
+        })
+    },
+    toShareRecord:function (e) {
+        wx.navigateTo({url: "/pages/share-record/index"})
+
+    },
+    toShareRule:function (e) {
+        wx.navigateTo({url: "/pages/share-rule/index"})
+
+    },
+    toSharePoster:function (e) {
+        wx.navigateTo({url: "/pages/share-poster/index"})
+
+    },
+    onPullDownRefresh:function () {
 
     }
 

@@ -38,7 +38,7 @@
 					"name": "打开分享的小程序卡片",
 					"pathName": "pages/start/start",
 					"query": "userId=13123456789",
-					"scene": "1007"
+					"scene": 1007
 				},
 				{
 					"id": 1,

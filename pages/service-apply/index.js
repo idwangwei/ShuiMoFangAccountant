@@ -12,7 +12,6 @@ Page({
         codeNumber: '',
         idCardNum: '',
         idCardSrc: ['', ''],
-        certificateSrc: '', //资格证图片
         positionalSrc: defaultSrc, //职称图片
         BigExampleSrc: '',
         serviceItems: [], //服务项目
@@ -26,7 +25,12 @@ Page({
         getCodeBtnDisabled:false,
         applyStatus:'',
         getCodeStr:'获取验证码',
-        applyId:''
+        applyId:'',
+        certificateArr:[],
+        isHideTelBox:true,
+        isHideIdCardBox:true,
+        isHideCertificateBox:true,
+        isHideServiceApplyBox:true,
     },
 
     onLoad: function (e) {
@@ -357,7 +361,11 @@ Page({
         });
 
     },
-
+    telNumberinput:function(e){
+        this.setData({
+            telNumber: e.detail.value
+        })
+    },
     setApplyInfo: function () {
 
     },
@@ -400,22 +408,25 @@ Page({
                 name: 'file',
                 formData: {},
                 success: function (res) {
-                    if(res.status!=200){
-                        wx.showToast({
-                            title: '图片上传失败，请重试',
-                            icon:'none',
-                        });
-                        return;
-                    }
+                    let data = null;
                     let fileName = '';
                     try {
-                        fileName = JSON.parse(res.data).data.fileName;
+                        data = JSON.parse(res.data);
+                        fileName = data.data.fileName;
                     } catch (e) {
                         wx.showToast({
                             title: '图片上传失败，请重试',
                             icon:'none',
                         });
                         return
+                    }
+
+                    if(data.status!=200){
+                        wx.showToast({
+                            title: '图片上传失败，请重试',
+                            icon:'none',
+                        });
+                        return;
                     }
 
                     let picType = e.target.dataset.type;
@@ -439,8 +450,15 @@ Page({
                     }
                     if (picType == 'certificate') {
                         serverPicName.certificate = [fileName];
+                        let dataIdx = e.currentTarget.dataset.idx;
+                        let arr = that.data.certificateArr;
+                        if(dataIdx !== undefined){
+                            arr.splice(dataIdx,1,picSrc)
+                        }else {
+                            arr.push(picSrc)
+                        }
                         that.setData({
-                            certificateSrc: picSrc,
+                            certificateArr: arr,
                             serverPicName
                         });
                     }
@@ -508,4 +526,26 @@ Page({
             multiArray: data.multiArray
         })
     },
+
+    hideOrShowTelBox:function (e) {
+        this.setData({
+            isHideTelBox:!this.data.isHideTelBox
+        })
+    },
+    hideOrShowIdCardBox:function (e) {
+        this.setData({
+            isHideIdCardBox:!this.data.isHideIdCardBox
+        })
+    },
+    hideOrShowCertificateBox:function (e) {
+        this.setData({
+            isHideCertificateBox:!this.data.isHideCertificateBox
+        })
+    },
+    hideOrShowServiceApplyBox:function (e) {
+      this.setData({
+          isHideServiceApplyBox:!this.data.isHideServiceApplyBox
+      })
+    },
+
 });

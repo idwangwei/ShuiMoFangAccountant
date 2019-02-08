@@ -3,12 +3,14 @@ App({
     navigateToLogin: false,
     onLaunch: function (shareParam) {
         const that = this;
-
         //点击分享，绑定推广人
+        console.log(shareParam&&JSON.stringify(shareParam.query));
+
+
         const userInfo = wx.getStorageSync('userInfo');
-        this.globalData.userInfo = userInfo;
+        that.globalData.userInfo = userInfo;
         if (shareParam.query.shareUserId && !userInfo) {
-            this.globalData.shareUserId = shareParam.query.shareUserId;
+            that.globalData.shareUserId = shareParam.query.shareUserId;
         }
 
 
@@ -57,6 +59,7 @@ App({
                 that.globalData.screenHeight = res.screenHeight;
             }
         })
+
     },
     LoginSys: function (userId) {
 
