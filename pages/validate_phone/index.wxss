@@ -8,14 +8,20 @@ page{
 .form-box{
     width:100%;
     background-color: #fff;
+    margin-top: 20rpx;
 }
 .row-wrap{
+    width: 720rpx;
+    height: 88rpx;
     line-height: 88rpx;
+    margin-left: 30rpx;
+    border-bottom: 1rpx solid #eee;
     display: flex;
-    font-size: 34rpx;
+    font-size: 28rpx;
+    /*justify-content: space-between;*/
 }
 .row-wrap .label{
-    width: 210rpx;
+    width: 160rpx;
     color: #000
 }
 .row-wrap .label-right{
@@ -30,6 +36,10 @@ page{
 }
 .row-wrap .right-box{
     margin-right: 30rpx; 
+}
+.arrow-right{
+    width: 15rpx;
+    height: 24rpx;
 }
 .save-btn,
 .cancel-btn{
@@ -55,11 +65,11 @@ button[type="default"]{
     margin-left:30rpx;
     border-bottom: 1rpx solid #eee;
     display: flex;
-    font-size: 34rpx;
+    font-size: 28rpx;
 }
 .addr-details .label{
     margin:auto 0 auto 0;
-    width: 210rpx;
+    width: 160rpx;
     color: #000
 }
 .addr-details textarea{
@@ -74,49 +84,4 @@ picker {
 }
 .hui{
     color: #777;
-}
-.choose-img{
-    width: 500rpx;
-}
-.upload-pic-box{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30rpx;
-}
-.id-card-box{
-    border-radius: 30rpx;
-    border: 4rpx dashed #b8b8b8;
-    width: 600rpx;
-    height: 400rpx;
-}
-
-.upload-pic-box image{
-    width: 100%;
-    height: 100%;
-}
-.upload-img-btn-box{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    height: 100%;
-}
-
-checkbox-group{
-    display: flex;
-    flex-direction: column;
-}
-.certificate-item-box{
-    padding: 20rpx 30rpx;
-    font-size: 34rpx;
-    background-color:#fff;
-    display: flex;
-    display: -webkit-box;
-    display: -webkit-flex;
-    justify-content: space-between;
-    -webkit-justify-content: space-between;
-}
-.border-bottom-line{
-    border-bottom: 1px solid #eaeaea;
 }

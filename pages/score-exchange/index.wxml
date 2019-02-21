@@ -4,7 +4,7 @@
             <view class="exchange-title">
                 <view style="font-size: 40rpx;">兑换</view>
                 <view style="font-size: 28rpx;color: #4b4b4b">
-                    兑换仅限每月2-4号，查看<text style="color: #ff9444;">兑换规则</text>
+                    兑换仅限每月2-4号，查看<text style="color: #ff9444;" bindtap="showScoreExchangeRule">兑换规则</text>
                 </view>
             </view>
 

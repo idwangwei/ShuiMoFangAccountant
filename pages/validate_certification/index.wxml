@@ -1,0 +1,36 @@
+<view class="page">
+    <view style="background-color: #f5f5f9;width: 100%">
+        <view style="margin-top: 30rpx;padding: 30rpx;background-color:#fff;display: flex;justify-content: space-between;">
+            <view>资质认证</view>
+            <view>
+                <!--<text>去认证</text>-->
+                <!--<text class="arrow-right"></text>-->
+            </view>
+        </view>
+        <view class="form-box">
+
+            <view class="row-wrap upload-pic-box" wx:for="{{certificateArr}}">
+                <view class="certificate-img-box" data-type="certificate" data-idx="{{index}}" bindtap="chooseAndSavePic">
+                    <image mode="aspectFit" src="{{item}}"></image>
+                </view>
+            </view>
+
+            <view class="row-wrap upload-pic-box">
+                <view class="id-card-box" data-type="certificate" bindtap="chooseAndSavePic">
+                    <view class="upload-img-btn-box">
+                        <view>上传证件</view>
+                        <view style="display: flex;align-items: center">
+                            <image src="/images/camera-icon.png"
+                                   style="width:64rpx;height:64rpx;margin-right:10rpx;"></image>
+                            <text>点击上传</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+
+        <view class="weui-btn-area">
+            <button class="weui-btn" type="primary" bindtap="bindSave">完成上传</button>
+        </view>
+    </view>
+</view>

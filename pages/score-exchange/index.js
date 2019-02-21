@@ -23,6 +23,7 @@ Page({
     bindCancel: function () {
         wx.navigateBack({})
     },
+
     bindSave: function (e) {
         if(this.data.exchangeDisabled){return}
         let that = this;
@@ -70,16 +71,32 @@ Page({
 
             })
     },
+
     bindInput: function (e) {
         this.setData({
             exchangeNum: e.detail.value
         })
     },
+
     exchangeAll: function () {
         this.setData({
             exchangeNum: this.data.userInfo.score
         })
-    }
+    },
 
+    showScoreExchangeRule:function () {
+        wx.showModal({
+            title:'兑换规则',
+            content:'只能在每月的2至4号提交提现申请，且每月只能提现1次。',
+            showCancel:false
+        })
+    },
+
+    /**
+     * 用户点击右上角分享
+     */
+    onShareAppMessage: function () {
+
+    }
 
 });

@@ -8,10 +8,10 @@ Page({
      * 页面的初始数据
      */
     data: {
-        isLoading:true,
-        summery:{
-            credit:'',
-            creditItems:[]
+        isLoading: true,
+        summery: {
+            credit: '',
+            creditItems: []
         }
     },
 
@@ -21,55 +21,70 @@ Page({
     onLoad: function (options) {
         let that = this;
         wx.startPullDownRefresh({
-            success:(res) => {
+            success: (res) => {
 
             },
-            fail:(res) =>{
+            fail: (res) => {
 
             },
-            complete:(res) =>{
+            complete: (res) => {
                 that.fetchData();
             }
         });
     },
-    onPullDownRefresh:function(){
+    onPullDownRefresh: function () {
         this.fetchData();
     },
 
-    fetchData:function(){
+    fetchData: function () {
         const that = this;
         that.setData({
-            isLoading:true
+            isLoading: true
         });
         api.fetchRequest('/api/credit/summary')
             .then(function (res) {
                 if (res.data.status != 200) {
                     wx.showToast({
                         title: res.data.msg,
-                        icon:'none'
+                        icon: 'none'
                     });
                     that.setData({
-                        isLoading:false
+                        isLoading: false
                     });
                     return
                 }
+
                 let summery = {
-                    credit:res.data.data.credit,
-                    creditItems:res.data.data.creditItems
+                    credit: res.data.data.credit,
+                    // creditItems: res.data.data.creditItems
+                    creditItems: [
+                        {
+                            msg: '订单奖励',
+                            date: '2019-10-22',
+                            credit: 200,
+                            type: 1
+                        },
+                        {
+                            msg: '积分提现',
+                            date: '2019-10-25',
+                            credit: 100,
+                            type: 0
+                        },
+                    ]
                 };
 
                 that.setData({
-                    isLoading:false,
+                    isLoading: false,
                     summery
                 });
             })
-            .catch((res)=>{
+            .catch((res) => {
                 wx.showToast({
                     title: res.msg,
-                    icon:'none'
+                    icon: 'none'
                 });
                 that.setData({
-                    isLoading:false
+                    isLoading: false
                 });
             })
     }

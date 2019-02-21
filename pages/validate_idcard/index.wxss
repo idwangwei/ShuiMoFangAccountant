@@ -8,6 +8,7 @@ page{
 .form-box{
     width:100%;
     background-color: #fff;
+    border-top: 1rpx solid #eee;
 }
 .row-wrap{
     line-height: 88rpx;
@@ -75,9 +76,7 @@ picker {
 .hui{
     color: #777;
 }
-.choose-img{
-    width: 500rpx;
-}
+
 .upload-pic-box{
     display: flex;
     flex-direction: column;
@@ -89,6 +88,8 @@ picker {
     border: 4rpx dashed #b8b8b8;
     width: 600rpx;
     height: 400rpx;
+    text-overflow:hidden;
+    overflow:hidden;
 }
 
 .upload-pic-box image{
@@ -106,17 +107,4 @@ picker {
 checkbox-group{
     display: flex;
     flex-direction: column;
-}
-.certificate-item-box{
-    padding: 20rpx 30rpx;
-    font-size: 34rpx;
-    background-color:#fff;
-    display: flex;
-    display: -webkit-box;
-    display: -webkit-flex;
-    justify-content: space-between;
-    -webkit-justify-content: space-between;
-}
-.border-bottom-line{
-    border-bottom: 1px solid #eaeaea;
 }

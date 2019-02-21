@@ -74,6 +74,7 @@ Page({
 
         })
     },
+
     onPullDownRefresh: function () {
         // 页面相关事件处理函数--监听用户下拉动作
         this.setData({
@@ -81,11 +82,13 @@ Page({
         });
         this.fetchOrderList(this.data.activeIndex)
     },
+
     onReachBottom: function () {
         // 页面上拉触底事件的处理函数
         console.log(1)
 
     },
+
     tabClick: function (e) {
         let activeIndex = e.currentTarget.id;
         this.setData({
@@ -93,6 +96,13 @@ Page({
             activeIndex
         });
         this.fetchOrderList(activeIndex);
+
+    },
+
+    /**
+     * 用户点击右上角分享
+     */
+    onShareAppMessage: function () {
 
     }
 });

@@ -1,6 +1,5 @@
 {
   "pages": [
-    "pages/service-apply/index",
     "pages/start/start",
     "pages/index/index",
     "pages/goods-details/index",
@@ -13,7 +12,11 @@
     "pages/company/index",
     "pages/share-record/index",
     "pages/share-rule/index",
-    "pages/share-poster/index"
+    "pages/service-apply/index",
+    "pages/share-poster/index",
+    "pages/validate_phone/index",
+    "pages/validate_idcard/index",
+    "pages/validate_certification/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

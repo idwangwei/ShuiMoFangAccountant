@@ -96,7 +96,7 @@ Page({
 
         return {
             title: CONFIG.shareProfile,
-            path: `/pages/index/index?inviterId=${this.data.userInfo.id}`,
+            path: `/pages/start/start?inviterId=${this.data.userInfo.id}`,
             imageUrl: '/images/share_img.png',
             success: function (res) {
                 console.log(res)

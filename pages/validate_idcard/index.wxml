@@ -1,0 +1,44 @@
+<view class="page">
+    <view style="background-color: #f5f5f9;width: 100%">
+
+        <view style="margin-top: 30rpx;padding: 30rpx;background-color:#fff;display: flex;justify-content: space-between">
+            <view>身份认证</view>
+        </view>
+
+        <view class="form-box">
+
+            <view class="row-wrap upload-pic-box">
+                <view class="id-card-box" data-type="idcard_0" bindtap="chooseAndSavePic">
+                    <image mode="aspectFit" class="choose-img"
+                           src="{{idCardSrc[0]}}" wx:if="{{idCardSrc[0]}}"></image>
+                    <view class="upload-img-btn-box" wx:else>
+                        <view>上传身份证正面</view>
+                        <view style="display: flex;align-items: center">
+                            <image src="/images/camera-icon.png" style="width:64rpx;height:64rpx;margin-right:10rpx"></image>
+                            <text>点击上传</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+
+            <view class="row-wrap upload-pic-box">
+                <view class="id-card-box" data-type="idcard_1" bindtap="chooseAndSavePic">
+                    <image mode="aspectFit" class="choose-img"
+                           src="{{idCardSrc[1]}}" wx:if="{{idCardSrc[1]}}"></image>
+                    <view class="upload-img-btn-box" wx:else>
+                        <view>上传身份反面</view>
+                        <view style="display: flex;align-items: center">
+                            <image src="/images/camera-icon.png" style="width:64rpx;height:64rpx;margin-right:10rpx"></image>
+                            <text>点击上传</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+
+        </view>
+
+        <view class="weui-btn-area">
+            <button class="weui-btn" type="primary" bindtap="bindSave">完成上传</button>
+        </view>
+    </view>
+</view>

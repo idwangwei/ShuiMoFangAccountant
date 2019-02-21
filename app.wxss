@@ -29,6 +29,21 @@ page{
   align-items: center;
 }
 
+.display-flex{
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:flex
+}
+.align-items-center{
+  align-items: center;
+  -webkit-align-items: center;
+}
+.justify-content-center{
+  justify-content: center;
+  -webkit-justify-content: center;
+}
+
+
 ::-webkit-scrollbar {
   width: 0;
   height: 0;

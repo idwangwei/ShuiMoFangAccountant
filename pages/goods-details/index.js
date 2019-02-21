@@ -197,7 +197,7 @@ Page({
     onShareAppMessage: function () {
         return {
             title: this.data.goodsDetail.name,
-            path: '/pages/goods-details/index?goodsId=' + this.data.goodsDetail.id + '&inviterId=' + app.globalData.userInfo.id,
+            path: '/pages/start/start?goodsId=' + this.data.goodsDetail.id + '&inviterId=' + app.globalData.userInfo.id,
             success: function (res) {
                 // 转发成功
             },
