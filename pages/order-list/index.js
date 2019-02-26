@@ -4,7 +4,7 @@ const app = getApp();
 Page({
     data: {
         orderList: [],
-        queryLimit: 10,
+        queryLimit: 1000,
         queryPageNum: 1,
         tabs: [
             {
@@ -29,7 +29,50 @@ Page({
     },
     orderDetail: function (e) {
         let index = e.currentTarget.dataset.index;
-        app.globalData.selectOrderInfo = this.data.orderList[index];
+        app.globalData.selectOrderInfo = this.data.orderList[this.data.activeIndex][index];
+        if(e.currentTarget.dataset.status === 'WAIT'){
+            wx.showModal({
+                title:'订单确认',
+                content:'受理改订单？',
+                cancelText:'拒绝',
+                confirmText:'受理',
+                success(res) {
+                    let param = 'REFUSE';
+
+                    if(res.confirm){
+                        param = 'ACCEPT ';
+                    }
+                    api.fetchRequest(`/api/order/distribute/${app.globalData.selectOrderInfo.id}/confirm?status=${param}`,{},'PUT')
+                        .then((res)=>{
+                            if(res.data.status !== 200){
+                                wx.showModal({
+                                    title:'提示',
+                                    content:res.data.msg,
+                                    showCancel:false,
+                                });
+                                return
+                            }
+                            wx.showToast({
+                                title:'受理成功',
+                                icon:'none'
+                            });
+                            this.fetchOrderList();
+                        })
+                        .catch((res)=>{
+                            wx.showModal({
+                                title:'提示',
+                                content:res.msg,
+                                showCancel:false,
+                            });
+                        });
+                }
+
+            });
+            return
+        }
+
+
+
         wx.navigateTo({
             url: "/pages/order-details/index"
         })
@@ -57,7 +100,8 @@ Page({
             {
                 limit: this.data.queryLimit,
                 pageNum: this.data.queryPageNum,
-                status: this.data.tabs.find((item)=>item.id == activeIndex).code
+                // status: this.data.tabs.find((item)=>item.id == activeIndex).code
+                status: 'ALL'
             }
         ).then((res) => {
             if (res.data.status !== 200) {
@@ -67,8 +111,12 @@ Page({
                 });
                 return;
             }
+
+            let all = res.data.data.results;
+            let serving = all.filter(item=>item.serveStatus === 'SERVING');
+            let done = all.filter(item=>item.serveStatus === 'DONE');
             that.setData({
-                orderList: res.data.data.results
+                orderList: [all,serving,done]
             })
         }).catch(() => {
 
@@ -95,7 +143,7 @@ Page({
             sliderOffset: e.currentTarget.offsetLeft,
             activeIndex
         });
-        this.fetchOrderList(activeIndex);
+        // this.fetchOrderList(activeIndex);
 
     },
 

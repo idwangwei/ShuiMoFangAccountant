@@ -38,7 +38,8 @@ function createOrder(e) {
       postJsonString.keyword4 = { value: '订单已关闭', color: '#173177' };
       postJsonString.keyword5 = { value: '您可以重新下单，请在30分钟内完成支付', color: '#173177' };
       app.sendTempleMsg(res.data.data.id, -1,
-          'mGVFc31MYNMoR9Z-A9yeVVYLIVGphUVcK2-S2UdZHmg', e.detail.formId,
+          'mGVFc31MYNMoR9Z-A9yeVVYLIVGphUVcK2-S2UdZHmg',
+          e.detail.formId,
           'pages/index/index', JSON.stringify(postJsonString));
       postJsonString = {};
       postJsonString.keyword1 = { value: '您的订单已发货，请注意查收', color: '#173177' };

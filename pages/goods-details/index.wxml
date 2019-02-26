@@ -5,7 +5,7 @@
 
     <view class="goods-info">
         <view class="goods-title">{{goodsDetail.name}}</view>
-        <view class="goods-share">分享有赏，好友下单后可得 {{goodsDetail.scoreToPay}} 积分奖励</view>
+        <view class="goods-share">分享有赏，好友接单后可得 {{goodsDetail.scoreToPay}} 积分奖励</view>
         <view class="goods-price" style="padding-left:35rpx;">¥ {{goodsDetail.price}}</view>
         <view class="goods-info-fx">
             <image src='../../images/qd.png' mode="widthFix"/>

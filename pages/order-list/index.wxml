@@ -13,14 +13,15 @@
 
             <view class="weui-tab__panel">
 
-                <view class="no-order" hidden="{{orderList.length ? true : false}}">
+                <view class="no-order" hidden="{{orderList[activeIndex].length ? true : false}}">
                     <image src="/images/no-order.png" class="no-order-img"></image>
                     <view class="text">暂无订单</view>
                 </view>
 
 
-                <view class="weui-form-preview order-list-item" wx:for="{{orderList}}" wx:key="*this"
+                <view class="weui-form-preview order-list-item" wx:for="{{orderList[activeIndex]}}" wx:key="*this"
                       bindtap="orderDetail"
+                      data-status="{{item.serveStatus}}"
                       data-index="{{index}}">
 
                     <view class="weui-form-preview__bd">
