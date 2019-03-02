@@ -89,12 +89,9 @@ Page({
     updateOrderTask: function (e) {
         let orderId = this.data.orderDetail.id;
         let orderTask = this.data.orderDetail.items[e.target.dataset.idx];
-        let orderTaskJson = {
-            progress:orderTask.progress,
-            remark:orderTask.remark
-        };
+        let orderTaskJson = encodeURIComponent(JSON.stringify(orderTask));
 
-        let query = `?orderTaskJson=${encodeURIComponent(JSON.stringify(orderTaskJson))}`;
+        let query = `?orderTaskJson=${orderTaskJson}`;
         api.fetchRequest(`/api/order/task/${orderId}/${orderTask.id}${query}`, {}, "PUT")
             .then((res) => {
                 if (res.data.status != 200) {

@@ -9,7 +9,7 @@ Page({
         tabs: [
             {
                 id: 0,
-                desc: '全部',
+                desc: '待确认',
                 code: 'ALL'
             },
             {
@@ -111,13 +111,29 @@ Page({
                 });
                 return;
             }
-
+            res.data.data.results.forEach((item)=>{
+                if(item.checkStatus === 'NOTSET' && item.serveStatus === 'SERVING'){
+                    item.checkStatusDesc = '去申请';
+                }
+                if(item.checkStatus === 'PENDING'){
+                    item.checkStatusDesc = '申请中';
+                }
+                if(item.checkStatus === 'REFUSE'){
+                    item.checkStatusDesc = '去申请';
+                }
+                if(item.checkStatus === 'DONE'){
+                    item.checkStatusDesc = '申请通过';
+                    item.creditStatusDesc = '去申请';
+                }
+            });
             let all = res.data.data.results;
+            let wait = all.filter(item=>item.serveStatus === 'WAIT');
             let serving = all.filter(item=>item.serveStatus === 'SERVING');
             let done = all.filter(item=>item.serveStatus === 'DONE');
             that.setData({
-                orderList: [all,serving,done]
-            })
+                orderList: [wait,serving,done]
+            });
+            wx.stopPullDownRefresh();
         }).catch(() => {
 
         })
@@ -145,6 +161,76 @@ Page({
         });
         // this.fetchOrderList(activeIndex);
 
+    },
+
+    applyCheck:function(e){
+        let serveStatus = e.currentTarget.dataset.serveStatus,
+            orderId = e.currentTarget.dataset.orderId,
+            checkStatus = e.currentTarget.dataset.checkStatus,
+            that = this;
+        if(serveStatus !== 'SERVING' || (checkStatus !== 'NOTSET'&&checkStatus !== 'REFUSE')){
+            return
+        }
+
+        wx.showModal({
+            title:'申请订单完成校验',
+            content:'订单已完成，申请管理员校验，校验成功可获得积分奖励',
+            confirmText:'去申请',
+            success(res) {
+                if(res.confirm){
+                    api.fetchRequest(`/api/order/check/apply/${orderId}`,{},'POST')
+                        .then((res)=>{
+                            if(res.data.status === 200){
+                                that.fetchOrderList();
+                            }
+                        })
+                        .catch((res)=>{
+                            wx.showModal({
+                                title:'申请失败',
+                                content:res.errMsg,
+                                showCancel:false
+                            })
+                        })
+                        .finally(()=>{})
+                }
+            }
+        });
+
+
+    },
+
+    applyCredit:function(e){
+        let serveStatus = e.currentTarget.dataset.serveStatus,
+            orderId = e.currentTarget.dataset.orderId,
+            checkStatus = e.currentTarget.dataset.checkStatus,
+            that = this;
+        if(serveStatus !== 'DONE' || (checkStatus !== 'DONE')){
+            return
+        }
+
+        wx.showModal({
+            title:'申请订单积分奖励',
+            content:'订单已完成，申请积分奖励',
+            confirmText:'去申请',
+            success(res) {
+                if(res.confirm){
+                    api.fetchRequest(`/api/order/apply/credit/${orderId}`,{},'POST')
+                        .then((res)=>{
+                            if(res.data.status === 200){
+                                that.fetchOrderList();
+                            }
+                        })
+                        .catch((res)=>{
+                            wx.showModal({
+                                title:'申请失败',
+                                content:res.errMsg,
+                                showCancel:false
+                            })
+                        })
+                        .finally(()=>{})
+                }
+            }
+        });
     },
 
     /**

@@ -43,9 +43,35 @@
 
                     </view>
                     <view class="weui-form-preview__ft ">
-                        <view class="weui-form-preview__item order-item-bottom">
+                        <view class="weui-form-preview__item order-item-bottom"
+                              wx:if="{{item.checkStatus !== 'DONE'}}"
+                              data-serve-status="{{item.serveStatus}}"
+                              data-check-status="{{item.checkStatus}}"
+                              data-order-id="{{item.id}}"
+                              catchtap="applyCheck">
+
                             <view class="weui-form-preview__label">校验状态</view>
-                            <view class="weui-form-preview__label">{{item.verificationDesc}}</view>
+                            <view class="weui-form-preview__label">
+                                <view>
+                                    {{item.checkStatusDesc}}
+                                    <view class="arrow-right" wx:if="{{item.checkStatusDesc}}"></view>
+                                </view>
+                            </view>
+                        </view>
+                        <view class="weui-form-preview__item order-item-bottom"
+                              wx:else
+                              data-serve-status="{{item.serveStatus}}"
+                              data-check-status="{{item.checkStatus}}"
+                              data-order-id="{{item.id}}"
+                              catchtap="applyCredit">
+
+                            <view class="weui-form-preview__label">积分申请</view>
+                            <view class="weui-form-preview__label">
+                                <view>
+                                    {{item.creditStatusDesc}}
+                                    <view class="arrow-right"></view>
+                                </view>
+                            </view>
                         </view>
 
                     </view>

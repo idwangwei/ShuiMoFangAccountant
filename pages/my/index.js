@@ -4,23 +4,15 @@ const CONFIG = require('../../config.js');
 
 Page({
     data: {
-        serviceItems: []
+        serviceItems: [],
+        empSummary:null,
+        username:'', //电话号码
+        name:'', //用户姓名,
+        userInfo:{},
     },
 
     onLoad() {
-        let that = this;
-        wx.showLoading();
-        api.fetchRequest(`/api/service/offer/${app.globalData.userInfo.id}`)
-            .then(function (res) {
-                wx.hideLoading();
-                that.setData({
-                    serviceItems: res.data.data,
-                })
-            })
-            .catch(()=>{
-                wx.hideLoading();
-            })
-
+        this.fetchData();
     },
 
     onShow() {
@@ -79,13 +71,34 @@ Page({
     },
 
     onPullDownRefresh:function () {
+        this.fetchData();
 
+    },
+
+    fetchData:function(e){
+        let that = this;
+        wx.showLoading();
+        api.fetchRequest(`/api/my/employee`,{},'GET')
+            .then(function (res) {
+                wx.hideLoading();
+                that.setData({
+                    serviceItems: res.data.data.serviceOfferRanges,
+                    empSummary:res.data.data.empSummary,
+                    name:res.data.data.name,
+                    username:res.data.data.username,
+                })
+            })
+            .catch(()=>{
+                wx.hideLoading();
+            })
+            .finally(()=>{
+                wx.stopPullDownRefresh();
+            })
     },
 
     /**
      * 用户点击右上角分享
      */
     onShareAppMessage: function () {
-
     }
 });

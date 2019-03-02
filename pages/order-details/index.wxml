@@ -8,6 +8,8 @@
             <view class="weui-media-box__title">{{orderDetail.prodName}}</view>
             <view class="weui-media-box__desc">订单号：{{orderDetail.id}}</view>
             <view class="weui-media-box__desc">订单区域：{{orderDetail.location}}</view>
+            <view class="weui-media-box__desc">客户姓名：{{orderDetail.customerName}}</view>
+            <view class="weui-media-box__desc">客户电话：{{orderDetail.customerTel}}</view>
         </view>
     </view>
 
@@ -17,12 +19,12 @@
           wx:for="{{orderDetail.items}}"
           wx:for-item="item" wx:for-index="idx" wx:key="*this">
 
-        <view data-idx="{{idx}}" bindtap="clickItem"
+        <view data-idx="{{idx}}"
               style="display: flex;justify-content: space-between;align-items: center">
             <view style="flex:1">{{item.prodTaskName}}</view>
         </view>
 
-        <view class="process-edit-box" hidden="{{!item.clicked}}">
+        <view class="process-edit-box">
             <view class="edit-box">
 
                 <view class="weui-cells weui-cells_after-title remark-box">
@@ -39,12 +41,16 @@
                     </view>
                 </view>
 
-            </view>
+                <view class="page__bd page__bd_spacing">
 
-            <button class="weui-btn" data-idx="{{idx}}" bindtap="updateOrderTask"
-                    type="default" plain="true">更新</button>
+                    <button class="weui-btn" data-idx="{{idx}}" bindtap="updateOrderTask"
+                            type="primary" plain="true" style="margin-bottom: 50rpx">更新</button>
+                </view>
+
+            </view>
 
         </view>
     </view>
+
 
 </view>

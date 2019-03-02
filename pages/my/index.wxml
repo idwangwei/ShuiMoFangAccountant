@@ -8,7 +8,7 @@
                     </view>
                     <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
                         <view class="weui-media-box__title">{{userInfo.nickName}}</view>
-                        <view class="weui-media-box__title">积分：{{userInfo.score||100}}</view>
+                        <view class="weui-media-box__title">积分：{{empSummary.creditTotal||0}}</view>
                     </view>
                 </view>
             </view>
@@ -28,13 +28,18 @@
 
                         <view class="weui-cell__bd weui-cell_primary" style="display: flex;justify-content: space-between">
                             <view>我的订单</view>
-                            <view>查看全部</view>
+                            <view>去查看</view>
                         </view>
                         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
                     </view>
 
                 </view>
                 <view style="display: flex;justify-content: space-around;padding: 16rpx;font-size:24rpx;">
+                    <view bindtap="gotoOrderList" data-type="0"
+                          style="display: flex;flex-direction: column;justify-content: center;align-items: center">
+                        <image src="/images/jinhangzhong.png" style="width: 24px;height: 24px"></image>
+                        <text>待确认</text>
+                    </view>
                     <view bindtap="gotoOrderList" data-type="1"
                           style="display: flex;flex-direction: column;justify-content: center;align-items: center">
                         <image src="/images/jinhangzhong.png" style="width: 24px;height: 24px"></image>
