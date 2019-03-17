@@ -11,7 +11,7 @@
   position: relative;
   color: rgb(195, 62, 58);
   padding-bottom:1.5rem;
-  background-color:#1f1b98
+  background-color:#ff0a94
 }
 .swiper_box {
   width: 100%;
@@ -195,10 +195,10 @@ swiper-item image {
   flex-direction: row;
   padding:0rpx 60rpx;
   align-items:center;
-  background-color: #1f1b98;
+  background-color: #ff0a94;
 }
 .search-content{
-  background: #6360b7;
+  background: #ff54b4;
 
   flex: 1;
   display: flex;
@@ -248,7 +248,7 @@ swiper-item image {
 }
 .goods-dividing-line-box .dividing-line{
   height: 2rpx;
-  background-color: #1f1b98;
+  background-color: #ff38a6;
   flex: 1;
 }
 .goods-dividing-line-box text{
@@ -292,10 +292,10 @@ swiper-item image {
   -webkit-align-items: center;
 }
 .contact-phone-icon{
-  background:linear-gradient(#1079db,#073866);
+  background:linear-gradient(#e40984,#740543);
 }
 .contact-address-icon{
-  background:linear-gradient(#86b671,#455d3a);
+  background:linear-gradient(#7874bb,#403e63);
 }
 .contact-phone-icon image,.contact-address-icon image{
   width: 60%;
@@ -307,7 +307,7 @@ swiper-item image {
 }
 .contact-phone-text-title,.contact-address-text-title{
   font-size: 28rpx;
-  color: #1f1b98;
+  color: #ff38a6;
   font-weight:bold;
 
 }
