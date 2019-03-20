@@ -9,7 +9,7 @@
     height:45vw;
     flex-direction:column;
     justify-content:center;
-    background: linear-gradient(#1f1b98,#5652c3);
+    background: linear-gradient(#ff0a94,#f666b7);
 
 }
 .my-avatar-warp .avatar-box{
@@ -29,82 +29,12 @@
 }
 
 
-.my-item{
-    width: 100%;
-    line-height: 100rpx;
-    font-size: 28rpx;
-    background-color:#fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.my-item .phone-str,.my-item .bind-phone-btn{
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-.my-item .phone-str{
-    padding-left: 30rpx;
-}
-.my-item .bind-phone-btn{
-    padding-right: 30rpx;
-}
-.my-item .phone-str image{
-    width: 60rpx;
-    height: 60rpx;
-    margin-right:20rpx;
-
-}
-
-.my-item .phone-str text{
-    color: #646464;
-}
-.my-score{
-    width:100%;
-    background-color:#fff;
-    margin:30rpx;
-}
-.my-share{
-    width:100%;
-    background-color:#fff;
-    margin-bottom:100rpx;
-
-}
 
 .score-exchange{
     display: flex;
     align-items: center;
     justify-content: flex-start;
 }
-.my-score .score-title,.my-share .share-title{
-    display: flex;
-    justify-content: space-between;
-    height: 100rpx;
-    line-height: 100rpx;
-    align-items: center;
-    border-bottom: 1rpx solid #eee;
-    padding: 0 30rpx;
-}
-
-.share-item-box, .score-item-box{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    height: 200rpx;
-    font-size: 24rpx;
-    padding: 0 30rpx;
-}
-.share-item-box image, .score-item-box image{
-    width: 100rpx;
-}
-.share-item,.score-item{
-    flex: 1;
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    justify-content: center;
-}
-
 .my-service-item{
     width:100%;
     background-color:#fff;
@@ -126,4 +56,7 @@
 page{
     background-color: #eee;
 }
-image{display: block}
+.weui-cells{
+    font-size: 34rpx;
+}
+

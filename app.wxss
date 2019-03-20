@@ -49,3 +49,21 @@ page{
   height: 0;
   color: transparent;
 }
+.display-flex{
+  display: flex;
+}
+.flex-1{
+  flex:1;
+}
+.margin-0{
+  margin: 0;
+}
+.weui-cell__bd{
+  font-size: 28rpx;
+}
+
+.icon-image{
+  width: 60rpx;
+  height: 60rpx;
+  margin-right: 5px;
+}
