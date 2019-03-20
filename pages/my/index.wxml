@@ -9,7 +9,7 @@
                     </view>
                     <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
                         <view class="weui-media-box__title">{{userInfo.nickName}}</view>
-                        <view class="weui-media-box__title">积分：{{userInfo.score||100}}</view>
+                        <view class="weui-media-box__title">积分：{{empSummary.creditRemain}}</view>
                     </view>
                 </view>
             </view>
@@ -68,17 +68,17 @@
                     <view bindtap="gotoOrderList" data-type="0"
                           style="display: flex;flex-direction: column;justify-content: center;align-items: center">
                         <image src="/images/my/daiqueren.png" class="icon-image"></image>
-                        <text>待确认</text>
+                        <text>待确认({{empSummary.orderQuantityCheck||0}})</text>
                     </view>
                     <view bindtap="gotoOrderList" data-type="1"
                           style="display: flex;flex-direction: column;justify-content: center;align-items: center">
                         <image src="/images/my/fuwuzhong.png" class="icon-image"></image>
-                        <text>服务中</text>
+                        <text>服务中({{empSummary.orderQuantityServing}})</text>
                     </view>
                     <view bindtap="gotoOrderList" data-type="2"
                           style="display: flex;flex-direction: column;justify-content: center;align-items: center">
                         <image src="/images/my/yiwancheng.png" class="icon-image"></image>
-                        <text>已完成</text>
+                        <text>已完成({{empSummary.orderQuantityDone}})</text>
                     </view>
                 </view>
 

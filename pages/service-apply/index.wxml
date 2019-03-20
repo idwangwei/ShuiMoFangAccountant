@@ -1,5 +1,5 @@
 <view class="container">
-    <view style="padding-top:30rpx;background-color: #f5f5f9;width: 100%">
+    <view style="background-color: #f5f5f9;width: 100%">
 
         <view class="certificate-item-box"
               bindtap="goValidatePhonePage"
@@ -58,7 +58,7 @@
                 </view>
             </view>
 
-            <view class="weui-cell weui-cell_input">
+            <view class="weui-cell weui-cell_input" style="padding: 32rpx">
                 <view class="weui-cell__hd">
                     <view class="weui-label">选择服务项</view>
                 </view>

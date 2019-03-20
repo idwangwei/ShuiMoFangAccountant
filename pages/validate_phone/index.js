@@ -71,6 +71,10 @@ Page({
 
 
     onLoad: function (e) {
+        this.setData({
+            userName:app.globalData.userInfo.name,
+            userPhone:app.globalData.userInfo.phone
+        })
     },
 
     validateCode: function (e) {

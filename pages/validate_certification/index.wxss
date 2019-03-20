@@ -7,7 +7,7 @@ page{
 }
 .form-box{
     width:100%;
-    background-color: #fff;
+    /*background-color: #fff;*/
     border-top: 1rpx solid #eee;
 }
 .row-wrap{

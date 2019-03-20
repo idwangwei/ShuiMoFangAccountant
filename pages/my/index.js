@@ -17,15 +17,14 @@ Page({
 
     onShow() {
         let that = this;
-        let userInfo = wx.getStorageSync('userInfo');
-        if (!userInfo) {
+        let userInfo = app.globalData.userInfo;
+        if (!userInfo.avatarUrl) {
             wx.navigateTo({
                 url: "/pages/start/start"
             })
         } else {
             that.setData({
-                userInfo: userInfo,
-                version: CONFIG.version
+                userInfo: userInfo
             })
         }
     },

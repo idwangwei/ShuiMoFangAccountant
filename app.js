@@ -80,6 +80,9 @@ App({
                 }
                 that.globalData.token = res.data.data.token;
                 that.globalData.userInfo.id = res.data.data.id;
+                that.globalData.userInfo.name = res.data.data.name;
+                that.globalData.userInfo.phone = res.data.data.phone;
+                that.globalData.userInfo.status = res.data.data.status;
                 wx.setStorage({
                     key:'token',
                     data:that.globalData.token

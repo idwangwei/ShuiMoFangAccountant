@@ -30,52 +30,53 @@ Page({
     orderDetail: function (e) {
         let index = e.currentTarget.dataset.index;
         app.globalData.selectOrderInfo = this.data.orderList[this.data.activeIndex][index];
-        if(e.currentTarget.dataset.status === 'WAIT'){
-            wx.showModal({
-                title:'订单确认',
-                content:'受理改订单？',
-                cancelText:'拒绝',
-                confirmText:'受理',
-                success(res) {
-                    let param = 'REFUSE';
-
-                    if(res.confirm){
-                        param = 'ACCEPT ';
-                    }
-                    api.fetchRequest(`/api/order/distribute/${app.globalData.selectOrderInfo.id}/confirm?status=${param}`,{},'PUT')
-                        .then((res)=>{
-                            if(res.data.status !== 200){
-                                wx.showModal({
-                                    title:'提示',
-                                    content:res.data.msg,
-                                    showCancel:false,
-                                });
-                                return
-                            }
-                            wx.showToast({
-                                title:'受理成功',
-                                icon:'none'
-                            });
-                            this.fetchOrderList();
-                        })
-                        .catch((res)=>{
-                            wx.showModal({
-                                title:'提示',
-                                content:res.msg,
-                                showCancel:false,
-                            });
-                        });
-                }
-
-            });
+        if(e.currentTarget.dataset.status !== 'SERVING'){
             return
         }
-
-
 
         wx.navigateTo({
             url: "/pages/order-details/index"
         })
+    },
+
+    orderReceive:function(e){
+        let contentStr = e.target.dataset.isReceive === '1' ? '受理该订单？':'连续忽略3次，账号将被禁用';
+        let param = e.target.dataset.isReceive === '1' ? 'ACCEPT':'REFUSE';
+        wx.showModal({
+            title:'订单确认',
+            content:contentStr,
+            cancelText:'取消',
+            confirmText:'确认',
+            success(res) {
+                if(!res.confirm){
+                    return
+                }
+                api.fetchRequest(`/api/order/distribute/${app.globalData.selectOrderInfo.id}/confirm?status=${param}`,{},'PUT')
+                    .then((res)=>{
+                        if(res.data.status !== 200){
+                            wx.showModal({
+                                title:'提示',
+                                content:res.data.msg,
+                                showCancel:false,
+                            });
+                            return
+                        }
+                        wx.showToast({
+                            title:'处理成功',
+                            icon:'none'
+                        });
+                        this.fetchOrderList();
+                    })
+                    .catch((res)=>{
+                        wx.showModal({
+                            title:'提示',
+                            content:res.msg,
+                            showCancel:false,
+                        });
+                    });
+            }
+
+        });
     },
 
     onLoad: function (options) {
