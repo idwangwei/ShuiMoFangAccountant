@@ -48,15 +48,17 @@
                     </view>
                     <view class="weui-form-preview__ft " style="line-height: 64rpx">
                         <view class="weui-form-preview__item order-item-bottom"
-                              wx:if="{{item.serveStatus === 'WAIT'}}">
+                              wx:if="{{item.serveStatus === 'SERVE_WAIT'}}">
 
                             <view class="weui-form-preview__label check-btn-box"
                                   style="background-color: #b4b4b4;"
                                   data-is-receive="0"
+                                  data-order-id="{{item.id}}"
                                   catchtap="orderReceive">忽略</view>
                             <view class="weui-form-preview__label check-btn-box"
                                   style="background-color: #4ea152;color: #ffffff"
                                   data-is-receive="1"
+                                  data-order-id="{{item.id}}"
                                   catchtap="orderReceive">接受</view>
                         </view>
 

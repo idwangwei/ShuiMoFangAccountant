@@ -82,7 +82,7 @@ Page({
                 wx.hideLoading();
                 that.setData({
                     serviceItems: res.data.data.serviceOfferRanges,
-                    empSummary: res.data.data.empSummary,
+                    empSummary: res.data.data.ecSummary,
                     name: res.data.data.name,
                     username: res.data.data.username,
                 })

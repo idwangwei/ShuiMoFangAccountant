@@ -1,12 +1,12 @@
 <view class="container">
     <view class="summery-pic-container">
-        <image src="{{goodsDetail.pic}}" class="slide-image" lazy-load="true" mode="widthFix"/>
+        <image src="{{goodsDetail[selectIdx].titleImage}}" class="slide-image" lazy-load="true" mode="widthFix"/>
     </view>
 
     <view class="goods-info">
-        <view class="goods-title">{{goodsDetail.name}}</view>
-        <view class="goods-share">分享有赏，好友接单后可得 {{goodsDetail.scoreToPay}} 积分奖励</view>
-        <view class="goods-price" style="padding-left:35rpx;">¥ {{goodsDetail.price}}</view>
+        <view class="goods-title">{{goodsInfo.name}}</view>
+        <view class="goods-share">分享有赏，好下单后可得 {{goodsInfo.cusCreditDesc}} 积分奖励</view>
+        <view class="goods-price" style="padding-left:35rpx;">奖励¥ {{goodsDetail[selectIdx].employeeCredit}}积分</view>
         <view class="goods-info-fx">
             <image src='../../images/qd.png' mode="widthFix"/>
             <button open-type="share">分享</button>
@@ -17,7 +17,7 @@
     <view class="goods-des-info">
         <view class="label-title">服务介绍</view>
         <view class="goods-text">
-            <image src="{{goodsDetail.textImg}}" mode="widthFix"></image>
+            <image src="{{goodsDetail[selectIdx].descImage}}" mode="widthFix"></image>
         </view>
     </view>
 

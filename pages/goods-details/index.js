@@ -8,41 +8,39 @@ const app = getApp();
 
 Page({
     data: {
-        goodsDetail: {
-            id:'',
-            name:'',
-            priceType:"fixed", //商品价格类型 fixed-固定100， float-浮动100起
-            price: 100, //商品价格数字
-            scoreToPay: 1, //推广获得积分
-            pic:"/images/goods-default-summary-pic.png", //商品介绍图片
-            textImg:["/images/goods-default-details-pic.png"] //商品详情图片
-        }, //商品详情
+        goodsInfo:{
+            name:'公司注册',
+            cusCreditDesc:50, //客户分享积分奖励
+        },
+        goodsDetail: [{}], //商品详情
+
+        selectIdx: 0,
         hideShopPopup: true,
-        region:['四川省', '成都市', '高新区'],
+        region: ['四川省', '成都市', '高新区'],
         propertyChildIds: "",
         propertyChildNames: "",
         canSubmit: false, //是否可以下单
         multiIndex: [0, 0, 0],
         multiArray: [],
-        telNumber:'',
-        userName:'',
+        telNumber: '',
+        userName: '',
     },
 
     onLoad: function (e) {
         const that = this;
 
         //默认地址为四川成都区域待选择
-        let multiArray = [[],[],[]];
-        let multiIndex = [0,0,0];
-        for(let i = 0; i < citys.cityData.length;i++){
+        let multiArray = [[], [], []];
+        let multiIndex = [0, 0, 0];
+        for (let i = 0; i < citys.cityData.length; i++) {
             multiArray[0].push(citys.cityData[i].name);
-            if(citys.cityData[i].id === 510000){
+            if (citys.cityData[i].id === 510000) {
                 multiIndex[0] = i;
-                for(let j = 0; j<citys.cityData[i].cityList.length;j++){
+                for (let j = 0; j < citys.cityData[i].cityList.length; j++) {
                     multiArray[1].push(citys.cityData[i].cityList[j].name);
-                    if(citys.cityData[i].cityList[j].id === 510100){
+                    if (citys.cityData[i].cityList[j].id === 510100) {
                         multiIndex[1] = j;
-                        multiArray[2].push(...citys.cityData[i].cityList[j].districtList.map((item)=>item.name))
+                        multiArray[2].push(...citys.cityData[i].cityList[j].districtList.map((item) => item.name))
                     }
                 }
             }
@@ -52,18 +50,55 @@ Page({
             multiIndex
         });
 
-        let info = getApp().globalData.selectGoodsInfo;
+        // let info = getApp().globalData.selectGoodsInfo;
+        let info = [
+            {
+                ccType: "FLOAT",
+                creditStrategy: "SEASON",
+                customerCredit: 10,
+                descImage: "https://api.shuimof.cn/upload/img/product/568956df-41e2-4ee2-ac5f-05a21b31880a.png",
+                descPrice: "小规模公司",
+                ecType: "FIXED",
+                employeeCredit: 200,
+                name: null,
+                price: 1000.1,
+                priceType: "FIXED",
+                prodId: 7,
+                templateId: 1,
+                titleImage: "https://api.shuimof.cn/upload/img/product/568956df-41e2-4ee2-ac5f-05a21b31880a.png"
+            },
+            {
+                ccType: "FLOAT",
+                creditStrategy: "SEASON",
+                customerCredit: 12,
+                descImage: "https://api.shuimof.cn/upload/img/product/568956df-41e2-4ee2-ac5f-05a21b31880a.png",
+                descPrice: "普通规模公司",
+                ecType: "FIXED",
+                employeeCredit: 220,
+                name: null,
+                price: 1200.1,
+                priceType: "FIXED",
+                prodId: 8,
+                templateId: 2,
+                titleImage: "https://api.shuimof.cn/upload/img/product/568956df-41e2-4ee2-ac5f-05a21b31880a.png"
+            },
+
+
+        ];
         that.setData({
-            goodsDetail:{
-                id:info.id,
-                name : info.name,
-                price: info.descPrice,
-                priceType:info.priceType,
-                scoreToPay:Math.floor(+info.descPrice.match(/\d+/)/10),
-                textImg:info.descImage,
-                pic:info.titleImage
-            }
-        });
+            goodsDetail: info
+        })
+        // that.setData({
+        //     goodsDetail: {
+        //         id: info.id,
+        //         name: info.name,
+        //         price: info.descPrice,
+        //         priceType: info.priceType,
+        //         scoreToPay: Math.floor(+info.descPrice.match(/\d+/) / 10),
+        //         textImg: info.descImage,
+        //         pic: info.titleImage
+        //     }
+        // });
     },
     /**
      * 弹出下单确认框
@@ -149,32 +184,32 @@ Page({
      * 立即购买
      */
     buyNow: function (e) {
-        if(!this.data.telNumber||!this.data.telNumber.match(/^1[0-9]{10}$/)){
+        if (!this.data.telNumber || !this.data.telNumber.match(/^1[0-9]{10}$/)) {
             wx.showModal({
-                title:'提示',
-                content:'请填入正确的11位手机号，便于联系',
-                showCancel:false
+                title: '提示',
+                content: '请填入正确的11位手机号，便于联系',
+                showCancel: false
             });
             return
         }
 
-        if(!this.data.userName){
+        if (!this.data.userName) {
             wx.showModal({
-                title:'提示',
-                content:'请填入联系人姓名，便于联系',
-                showCancel:false
+                title: '提示',
+                content: '请填入联系人姓名，便于联系',
+                showCancel: false
             });
             return
         }
 
         //校验信息是否填写完整
-        if((citys.cityData[this.data.multiIndex[0]].cityList.length!==0 && this.data.multiIndex[1] == 0)
-            ||(citys.cityData[this.data.multiIndex[0]].cityList[this.data.multiIndex[1]].districtList.length!==0 && this.data.multiIndex[2] == 0)
-        ){
+        if ((citys.cityData[this.data.multiIndex[0]].cityList.length !== 0 && this.data.multiIndex[1] == 0)
+            || (citys.cityData[this.data.multiIndex[0]].cityList[this.data.multiIndex[1]].districtList.length !== 0 && this.data.multiIndex[2] == 0)
+        ) {
             wx.showModal({
-                title:'提示',
-                content:'请选择正确的辖区',
-                showCancel:false
+                title: '提示',
+                content: '请选择正确的辖区',
+                showCancel: false
             });
             return
         }
@@ -182,10 +217,10 @@ Page({
         this.closePopupTap();
 
         creatOrder.createOrder({
-            goodsDetail:{},
+            goodsDetail: {},
             telNumber: this.telNumber,
 
-        }).then(()=>{
+        }).then(() => {
 
         })
 
@@ -223,25 +258,25 @@ Page({
             case 0:
                 data.multiIndex[1] = 0;
                 data.multiIndex[2] = 0;
-                data.multiArray[1] = [...citys.cityData[data.multiIndex[0]].cityList.map((item)=>item.name)];
-                data.multiArray[2] = [...citys.cityData[data.multiIndex[0]].cityList[0].districtList.map((item)=>item.name)];
+                data.multiArray[1] = [...citys.cityData[data.multiIndex[0]].cityList.map((item) => item.name)];
+                data.multiArray[2] = [...citys.cityData[data.multiIndex[0]].cityList[0].districtList.map((item) => item.name)];
                 break;
             case 1:
                 data.multiIndex[2] = 0;
-                data.multiArray[2] = [...citys.cityData[data.multiIndex[0]].cityList[data.multiIndex[1]].districtList.map((item)=>item.name)];
+                data.multiArray[2] = [...citys.cityData[data.multiIndex[0]].cityList[data.multiIndex[1]].districtList.map((item) => item.name)];
                 break
         }
         console.log(data.multiIndex);
         this.setData({
-            multiArray:data.multiArray
+            multiArray: data.multiArray
         })
     },
-    bindPhoneInput:function (e) {
+    bindPhoneInput: function (e) {
         this.setData({
             telNumber: e.detail.value
         })
     },
-    bindNameInput:function (e) {
+    bindNameInput: function (e) {
         this.setData({
             userName: e.detail.value
         })

@@ -3,14 +3,15 @@ const api = require('../../utils/request.js');
 const app = getApp();
 Page({
     data: {
-        orderList: [],
+        orderList: [[],[],[]],
+        canLoadMore:[true,true,true],
         queryLimit: 1000,
-        queryPageNum: 1,
+        queryPageNum: [1,1,1],
         tabs: [
             {
                 id: 0,
                 desc: '待确认',
-                code: 'ALL'
+                code: 'SERVE_WAIT'
             },
             {
                 id: 1,
@@ -42,6 +43,7 @@ Page({
     orderReceive:function(e){
         let contentStr = e.target.dataset.isReceive === '1' ? '受理该订单？':'连续忽略3次，账号将被禁用';
         let param = e.target.dataset.isReceive === '1' ? 'ACCEPT':'REFUSE';
+        let orderId = e.target.dataset.orderId;
         wx.showModal({
             title:'订单确认',
             content:contentStr,
@@ -51,7 +53,7 @@ Page({
                 if(!res.confirm){
                     return
                 }
-                api.fetchRequest(`/api/order/distribute/${app.globalData.selectOrderInfo.id}/confirm?status=${param}`,{},'PUT')
+                api.fetchRequest(`/api/order/distribute/${orderId}/confirm?status=${param}`,{},'PUT')
                     .then((res)=>{
                         if(res.data.status !== 200){
                             wx.showModal({
@@ -67,13 +69,6 @@ Page({
                         });
                         this.fetchOrderList();
                     })
-                    .catch((res)=>{
-                        wx.showModal({
-                            title:'提示',
-                            content:res.msg,
-                            showCancel:false,
-                        });
-                    });
             }
 
         });
@@ -93,16 +88,15 @@ Page({
         this.fetchOrderList(activeIndex);
     },
 
-    fetchOrderList:function(activeIndex){
+    fetchOrderList:function(){
         let that = this;
         // 生命周期函数--监听页面初次渲染完成
         api.fetchRequest(
             `/api/order/serve/orders`,
             {
                 limit: this.data.queryLimit,
-                pageNum: this.data.queryPageNum,
-                // status: this.data.tabs.find((item)=>item.id == activeIndex).code
-                status: 'ALL'
+                pageNum: this.data.queryPageNum[this.data.activeIndex],
+                status: this.data.tabs[this.data.activeIndex].code
             }
         ).then((res) => {
             if (res.data.status !== 200) {
@@ -127,25 +121,28 @@ Page({
                     item.creditStatusDesc = '去申请';
                 }
             });
-            let all = res.data.data.results;
-            let wait = all.filter(item=>item.serveStatus === 'WAIT');
-            let serving = all.filter(item=>item.serveStatus === 'SERVING');
-            let done = all.filter(item=>item.serveStatus === 'DONE');
+            let orderList = this.data.orderList;
+            let canLoadMore = this.data.canLoadMore;
+            orderList[this.data.activeIndex] = res.data.data.results;
+            if(res.data.data.lastPage){
+                canLoadMore[this.data.activeIndex] = false;
+            }
             that.setData({
-                orderList: [wait,serving,done]
+                orderList,
+                canLoadMore
             });
             wx.stopPullDownRefresh();
-        }).catch(() => {
-
         })
     },
 
     onPullDownRefresh: function () {
         // 页面相关事件处理函数--监听用户下拉动作
+        let queryPageNum = this.data.queryPageNum;
+        queryPageNum[this.data.activeIndex] = 1;
         this.setData({
-            queryPageNum:1
+            queryPageNum
         });
-        this.fetchOrderList(this.data.activeIndex)
+        this.fetchOrderList()
     },
 
     onReachBottom: function () {
@@ -153,15 +150,21 @@ Page({
         console.log(1)
 
     },
+    /**
+     * 用户点击右上角分享
+     */
+    onShareAppMessage: function () {
 
+    },
     tabClick: function (e) {
         let activeIndex = e.currentTarget.id;
         this.setData({
             sliderOffset: e.currentTarget.offsetLeft,
             activeIndex
         });
-        // this.fetchOrderList(activeIndex);
-
+        if(this.data.orderList[activeIndex].length === 0 && this.data.canLoadMore[activeIndex]){
+            this.fetchOrderList();
+        }
     },
 
     applyCheck:function(e){
@@ -234,10 +237,5 @@ Page({
         });
     },
 
-    /**
-     * 用户点击右上角分享
-     */
-    onShareAppMessage: function () {
 
-    }
 });

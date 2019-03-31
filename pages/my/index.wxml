@@ -73,12 +73,12 @@
                     <view bindtap="gotoOrderList" data-type="1"
                           style="display: flex;flex-direction: column;justify-content: center;align-items: center">
                         <image src="/images/my/fuwuzhong.png" class="icon-image"></image>
-                        <text>服务中({{empSummary.orderQuantityServing}})</text>
+                        <text>服务中({{empSummary.orderQuantityServing||0}})</text>
                     </view>
                     <view bindtap="gotoOrderList" data-type="2"
                           style="display: flex;flex-direction: column;justify-content: center;align-items: center">
                         <image src="/images/my/yiwancheng.png" class="icon-image"></image>
-                        <text>已完成({{empSummary.orderQuantityDone}})</text>
+                        <text>已完成({{empSummary.orderQuantityDone||0}})</text>
                     </view>
                 </view>
 

@@ -1,7 +1,31 @@
 
-page{
+page {
     background-color: #FFFFFF;
 }
-image{
+
+image {
     margin: 4px 0;
+}
+
+.share-data-box {
+    border: 2px solid #e6e6e6;
+}
+
+.share-data-box .box-title {
+    color: #444444;
+    font-size: 32 rpx;
+    display: flex;
+}
+
+.title-item {
+    flex: 1;
+    text-align: center;
+}
+.list-item-box{
+    color: #444444;
+    font-size: 28 rpx;
+    display: flex;
+}
+.list-item{
+    flex: 1;
 }
