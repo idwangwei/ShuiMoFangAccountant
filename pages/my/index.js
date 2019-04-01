@@ -83,6 +83,7 @@ Page({
                 that.setData({
                     serviceItems: res.data.data.serviceOfferRanges,
                     empSummary: res.data.data.ecSummary,
+                    orderSummary: res.data.data.orderSummary,
                     name: res.data.data.name,
                     username: res.data.data.username,
                 })

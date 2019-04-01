@@ -1,7 +1,6 @@
 const CONFIG = require('../config.js');
 const REQUEST_CACHE = [];
 const API_BASE_URL = 'https://api.shuimof.cn'; //阿里云
-// const API_BASE_URL = 'http://10.0.1.201:80'; //本地
 
 /**
  * 简单请求封装
@@ -95,10 +94,10 @@ function FetchRequest(url, data, method = 'GET', cache = 0, header = {}, noSubDo
          */
         function FetchError(err) {
             if (err) {
-                wx.showToast({
-                    title: err.errMsg || err.message,
-                    icon: 'none',
-                    duration: 3000
+                wx.showModal({
+                    title: '失败',
+                    content: err.errMsg || err.msg,
+                    showCancel: false
                 })
             }
             reject(err);

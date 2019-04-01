@@ -116,7 +116,7 @@ Page({
                 if(item.checkStatus === 'REFUSE'){
                     item.checkStatusDesc = '去申请';
                 }
-                if(item.checkStatus === 'DONE'){
+                if(item.checkStatus === 'CHECKED'){
                     item.checkStatusDesc = '申请通过';
                     item.creditStatusDesc = '去申请';
                 }
@@ -208,7 +208,7 @@ Page({
             orderId = e.currentTarget.dataset.orderId,
             checkStatus = e.currentTarget.dataset.checkStatus,
             that = this;
-        if(serveStatus !== 'DONE' || (checkStatus !== 'DONE')){
+        if(serveStatus !== 'SERVED' || (checkStatus !== 'CHECKED')){
             return
         }
 
@@ -218,7 +218,7 @@ Page({
             confirmText:'去申请',
             success(res) {
                 if(res.confirm){
-                    api.fetchRequest(`/api/order/apply/credit/${orderId}`,{},'POST')
+                    api.fetchRequest(`/api/credit/${orderId}/confirm/`,{},'PUT')
                         .then((res)=>{
                             if(res.data.status === 200){
                                 that.fetchOrderList();

@@ -44,7 +44,7 @@
                 <view class="page__bd page__bd_spacing">
 
                     <button class="weui-btn" data-idx="{{idx}}" bindtap="updateOrderTask"
-                            type="primary" plain="true" style="margin-bottom: 50rpx">更新</button>
+                            type="primary" plain="true" style="margin-bottom: 50rpx;margin-top: 20rpx">更新</button>
                 </view>
 
             </view>

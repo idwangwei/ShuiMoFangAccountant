@@ -50,55 +50,44 @@ Page({
             multiIndex
         });
 
-        // let info = getApp().globalData.selectGoodsInfo;
-        let info = [
-            {
-                ccType: "FLOAT",
-                creditStrategy: "SEASON",
-                customerCredit: 10,
-                descImage: "https://api.shuimof.cn/upload/img/product/568956df-41e2-4ee2-ac5f-05a21b31880a.png",
-                descPrice: "小规模公司",
-                ecType: "FIXED",
-                employeeCredit: 200,
-                name: null,
-                price: 1000.1,
-                priceType: "FIXED",
-                prodId: 7,
-                templateId: 1,
-                titleImage: "https://api.shuimof.cn/upload/img/product/568956df-41e2-4ee2-ac5f-05a21b31880a.png"
-            },
-            {
-                ccType: "FLOAT",
-                creditStrategy: "SEASON",
-                customerCredit: 12,
-                descImage: "https://api.shuimof.cn/upload/img/product/568956df-41e2-4ee2-ac5f-05a21b31880a.png",
-                descPrice: "普通规模公司",
-                ecType: "FIXED",
-                employeeCredit: 220,
-                name: null,
-                price: 1200.1,
-                priceType: "FIXED",
-                prodId: 8,
-                templateId: 2,
-                titleImage: "https://api.shuimof.cn/upload/img/product/568956df-41e2-4ee2-ac5f-05a21b31880a.png"
-            },
-
-
-        ];
+        let info = getApp().globalData.selectGoodsInfo.prodVariants;
+        // let info = [
+        //     {
+        //         ccType: "FLOAT",
+        //         creditStrategy: "SEASON",
+        //         customerCredit: 10,
+        //         descImage: "https://api.shuimof.cn/upload/img/product/568956df-41e2-4ee2-ac5f-05a21b31880a.png",
+        //         descPrice: "小规模公司",
+        //         ecType: "FIXED",
+        //         employeeCredit: 200,
+        //         name: null,
+        //         price: 1000.1,
+        //         priceType: "FIXED",
+        //         prodId: 7,
+        //         templateId: 1,
+        //         titleImage: "https://api.shuimof.cn/upload/img/product/568956df-41e2-4ee2-ac5f-05a21b31880a.png"
+        //     },
+        //     {
+        //         ccType: "FLOAT",
+        //         creditStrategy: "SEASON",
+        //         customerCredit: 12,
+        //         descImage: "https://api.shuimof.cn/upload/img/product/568956df-41e2-4ee2-ac5f-05a21b31880a.png",
+        //         descPrice: "普通规模公司",
+        //         ecType: "FIXED",
+        //         employeeCredit: 220,
+        //         name: null,
+        //         price: 1200.1,
+        //         priceType: "FIXED",
+        //         prodId: 8,
+        //         templateId: 2,
+        //         titleImage: "https://api.shuimof.cn/upload/img/product/568956df-41e2-4ee2-ac5f-05a21b31880a.png"
+        //     },
+        //
+        //
+        // ];
         that.setData({
             goodsDetail: info
         })
-        // that.setData({
-        //     goodsDetail: {
-        //         id: info.id,
-        //         name: info.name,
-        //         price: info.descPrice,
-        //         priceType: info.priceType,
-        //         scoreToPay: Math.floor(+info.descPrice.match(/\d+/) / 10),
-        //         textImg: info.descImage,
-        //         pic: info.titleImage
-        //     }
-        // });
     },
     /**
      * 弹出下单确认框
@@ -123,6 +112,7 @@ Page({
      * @param {Object} e
      */
     labelItemTap: function (e) {
+        let i;
         var that = this;
         /*
         console.log(e)
@@ -132,28 +122,28 @@ Page({
         console.log(e.currentTarget.dataset.propertychildname)
         */
         // 取消该分类下的子栏目所有的选中状态
-        var childs = that.data.goodsDetail.properties[e.currentTarget.dataset.propertyindex].childsCurGoods;
-        for (var i = 0; i < childs.length; i++) {
+        let childes = that.data.goodsDetail.properties[e.currentTarget.dataset.propertyindex].childsCurGoods;
+        for (i = 0; i < childes.length; i++) {
             that.data.goodsDetail.properties[e.currentTarget.dataset.propertyindex].childsCurGoods[i].active = false;
         }
         // 设置当前选中状态
         that.data.goodsDetail.properties[e.currentTarget.dataset.propertyindex].childsCurGoods[e.currentTarget.dataset.propertychildindex].active = true;
         // 获取所有的选中规格尺寸数据
-        var needSelectNum = that.data.goodsDetail.properties.length;
-        var curSelectNum = 0;
-        var propertyChildIds = "";
-        var propertyChildNames = "";
-        for (var i = 0; i < that.data.goodsDetail.properties.length; i++) {
-            childs = that.data.goodsDetail.properties[i].childsCurGoods;
-            for (var j = 0; j < childs.length; j++) {
-                if (childs[j].active) {
+        const needSelectNum = that.data.goodsDetail.properties.length;
+        let curSelectNum = 0;
+        let propertyChildIds = "";
+        let propertyChildNames = "";
+        for (i = 0; i < that.data.goodsDetail.properties.length; i++) {
+            childes = that.data.goodsDetail.properties[i].childsCurGoods;
+            for (let j = 0; j < childes.length; j++) {
+                if (childes[j].active) {
                     curSelectNum++;
-                    propertyChildIds = propertyChildIds + that.data.goodsDetail.properties[i].id + ":" + childs[j].id + ",";
-                    propertyChildNames = propertyChildNames + that.data.goodsDetail.properties[i].name + ":" + childs[j].name + "  ";
+                    propertyChildIds = propertyChildIds + that.data.goodsDetail.properties[i].id + ":" + childes[j].id + ",";
+                    propertyChildNames = propertyChildNames + that.data.goodsDetail.properties[i].name + ":" + childes[j].name + "  ";
                 }
             }
         }
-        var canSubmit = false;
+        let canSubmit = false;
         if (needSelectNum == curSelectNum) {
             canSubmit = true;
         }
@@ -223,10 +213,6 @@ Page({
         }).then(() => {
 
         })
-
-        // wx.navigateTo({
-        //     url: "/pages/to-pay-order/index?orderType=buyNow"
-        // })
     },
 
     onShareAppMessage: function () {

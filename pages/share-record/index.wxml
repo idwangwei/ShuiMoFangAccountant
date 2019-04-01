@@ -1,5 +1,7 @@
 <view class=" page">
-
+    <view class="title-bg-box">
+        <image src="./../../images/title-bg.png" mode="widthFix"></image>
+    </view>
     <view class="page__bd">
         <view class="weui-tab">
             <view class="weui-navbar">
@@ -17,26 +19,46 @@
             <view class="weui-tab__panel">
                 <!--我的推广-->
                 <view wx:if="{{activeIndex == 0}}" class="share-data-box">
-                    <view >
-                        <text>推广人</text>
-                        <text>邀请人</text>
-                        <text>获得积分</text>
-                        <text>推广时间</text>
+                    <view class="share-form-title-box">
+                        <view class="share-form-title">
+                            <view class="title-img-box">
+                                <image src="./../../images/my/wo.png" mode="aspectFit"></image>
+                            </view>
+                            <text>受邀人</text>
+                        </view>
+                        <view class="share-form-title">
+                            <view class="title-img-box">
+                                <image src="./../../images/my/integral.png" mode="aspectFit"></image>
+                            </view>
+                            <text>获得积分</text>
+                        </view>
+                        <view class="share-form-title">
+                            <view class="title-img-box">
+                                <image src="./../../images/my/shijian.png" mode="aspectFit"></image>
+                            </view>
+                            <text>获得时间</text>
+                        </view>
                     </view>
-                    <view wx:for="{{shareData}}">
-                        <text>{{item.from}}</text>
-                        <text>{{item.to}}</text>
-                        <text>{{item.score}}</text>
-                        <text>{{item.date}}</text>
+                    <view wx:for="{{shareData}}" class="share-form-row">
+                        <text class="flex-1">{{item.popularizedName}}</text>
+                        <text class="flex-1">{{item.score}}</text>
+                        <text class="flex-1">{{item.date}}</text>
                     </view>
                 </view>
                 <!--推广海报-->
                 <view wx:elif="{{activeIndex == 1}}">
-                    推广海报
+                    <view style="margin:auto;">
+                        <image src="./../../images/share_img.png" mode="widthFix" style="width:100%;margin: 0"></image>
+                    </view>
                 </view>
                 <!--推广规则-->
                 <view wx:else>
-                    规格规则
+                    <view style="font-size: 36rpx;font-weight: bold;text-align: center;color: #3d3d3d;padding: 32rpx">
+                        <text>积分获取规则</text>
+                    </view>
+                    <view style="font-size: 28rpx;color:#8b8b8b;padding: 0 32rpx">
+                        <text>分享小程序给微信好友，好友下单可得10积分，积分可取现，1个积分兑换1元人民币。</text>
+                    </view>
                 </view>
 
             </view>

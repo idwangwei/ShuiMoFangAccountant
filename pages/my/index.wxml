@@ -68,17 +68,17 @@
                     <view bindtap="gotoOrderList" data-type="0"
                           style="display: flex;flex-direction: column;justify-content: center;align-items: center">
                         <image src="/images/my/daiqueren.png" class="icon-image"></image>
-                        <text>待确认({{empSummary.orderQuantityCheck||0}})</text>
+                        <text>待确认({{orderSummary.orderQuantityCheck||0}})</text>
                     </view>
                     <view bindtap="gotoOrderList" data-type="1"
                           style="display: flex;flex-direction: column;justify-content: center;align-items: center">
                         <image src="/images/my/fuwuzhong.png" class="icon-image"></image>
-                        <text>服务中({{empSummary.orderQuantityServing||0}})</text>
+                        <text>服务中({{orderSummary.orderQuantityServing||0}})</text>
                     </view>
                     <view bindtap="gotoOrderList" data-type="2"
                           style="display: flex;flex-direction: column;justify-content: center;align-items: center">
                         <image src="/images/my/yiwancheng.png" class="icon-image"></image>
-                        <text>已完成({{empSummary.orderQuantityDone||0}})</text>
+                        <text>已完成({{orderSummary.orderQuantityDone||0}})</text>
                     </view>
                 </view>
 

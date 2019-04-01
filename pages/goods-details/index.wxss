@@ -254,3 +254,32 @@ picker {
 .form-box{
   margin-bottom: 100rpx;
 }
+
+.service-array-box{
+  width: 100%;
+  background-color: #fff;
+  margin-bottom:24rpx;
+  padding:35rpx 0;
+
+}
+.service-title{
+  padding: 0 35rpx 35rpx 35rpx;
+  font-size: 28rpx;
+}
+.service-body{
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.service-item{
+  margin: 10rpx 32rpx;
+
+  border-radius: 2rem;
+  font-size: 24rpx;
+  padding: 10rpx 24rpx;
+  background-color: #dfdfdf;
+}
+.select-item{
+  color: #474dff;
+  background-color: #aeaeff;
+}

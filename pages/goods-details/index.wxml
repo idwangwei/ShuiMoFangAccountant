@@ -14,6 +14,16 @@
         </view>
     </view>
 
+    <view class="service-array-box">
+        <view class="service-title">
+            <text>服务</text>
+        </view>
+        <view bindtap="selectService" class="service-body">
+            <text wx:for="{{goodsDetail}}" data-index="{{index}}"
+                  class="service-item {{selectIdx === index?'select-item':''}}">{{item.name}}</text>
+        </view>
+    </view>
+
     <view class="goods-des-info">
         <view class="label-title">服务介绍</view>
         <view class="goods-text">
