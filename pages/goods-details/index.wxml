@@ -5,7 +5,7 @@
 
     <view class="goods-info">
         <view class="goods-title">{{goodsInfo.name}}</view>
-        <view class="goods-share">分享有赏，好下单后可得 {{goodsInfo.cusCreditDesc}} 积分奖励</view>
+        <!--<view class="goods-share">分享有赏，好下单后可得 {{goodsInfo.cusCreditDesc}} 积分奖励</view>-->
         <view class="goods-price" style="padding-left:35rpx;">奖励¥ {{goodsDetail[selectIdx].employeeCredit}}积分</view>
         <view class="goods-info-fx">
             <image src='../../images/qd.png' mode="widthFix"/>
@@ -36,14 +36,14 @@
               style="padding:4rpx 0;flex: 1;height: 100%;display: flex;flex-direction: column;align-items: center" bindtap="makePhoneCall">
             <image src="/images/icon/phone.png" mode="aspectFit"
                    class="" style="flex: 1;width: 100%;"/>
-            <text style="font-size:26rpx;">服务热线</text>
+            <text style="font-size:24rpx;">服务热线</text>
         </view>
 
         <view class=""
-              style="padding:4rpx 0;flex: 1;height: 100%;display: flex;flex-direction: column;align-items: center;position: relative">
+              style="flex: 1;height: 100%;display: flex;flex-direction: column;align-items: center;position: relative">
             <button open-type="contact" bindcontact="handleContact" class="custom-service-btn"></button>
             <image src="/images/icon/kefu2.png" mode="aspectFit" class="" style="flex: 1;width: 100%;"/>
-            <text style="font-size:26rpx;">在线咨询</text>
+            <text style="font-size:24rpx;">在线咨询</text>
         </view>
 
         <view class="now-buy" bindtap="bindGuiGeTap" style="flex: 2">立即接单</view>

@@ -8,6 +8,7 @@ page{
 .form-box{
     width:100%;
     background-color: #fff;
+    padding-bottom: 50rpx;
 }
 .row-wrap{
     line-height: 88rpx;

@@ -37,7 +37,7 @@
 					"id": 0,
 					"name": "打开分享的小程序卡片",
 					"pathName": "pages/start/start",
-					"query": "userId=13123456789",
+					"query": "userId=oGrjr4vq0NKR_kmv3u4zZQ4Q2hI9",
 					"scene": 1007
 				},
 				{
@@ -45,7 +45,7 @@
 					"name": "打开带shareTicket的小程序卡片",
 					"pathName": "pages/my/index",
 					"query": "userId=13123456789&hasShareTicket=true",
-					"scene": "1044",
+					"scene": 1044,
 					"shareInfo": {
 						"groupName": "测试模拟群0",
 						"shareName": "w345kVIy4atSyXpX6etsJxW9snxnkAJY98ap3w6Hw7k@cr4dev",

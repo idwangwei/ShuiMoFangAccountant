@@ -1,4 +1,3 @@
-const citys = require('../../utils/city.js');
 const api = require('../../utils/request.js');
 const defaultSrc = '/images/ico-add-addr.png';
 //获取应用实例
@@ -13,8 +12,14 @@ Page({
     onLoad: function (option) {
         let images = option.images;
         if(images){
+            let imagesUrlArr = images.split(','); 
+            let imagesNameArr = imagesUrlArr.map((v)=>{
+                let result = v.match(/([^\.\/\\]+)\.([a-z]+)$/i);
+                return result ? result[0]:'';
+            }); 
             this.setData({
-                idCardSrc:images.split(',')
+                idCardSrc: imagesUrlArr,
+                serverImageNames: imagesNameArr
             });
         }
     },
@@ -33,14 +38,14 @@ Page({
                         data = JSON.parse(res.data);
                     }catch (e) {
                         wx.showToast({
-                            title: '图片上传失败，请重试',
+                            title: '图片更新失败，请重新选择',
                             icon: 'none',
                         });
                         return;
                     }
                     if (data.status !== 200) {
                         wx.showToast({
-                            title: '图片上传失败，请重试',
+                            title: '图片更新失败，请重新选择',
                             icon: 'none',
                         });
                         return;
@@ -68,7 +73,7 @@ Page({
                 fail: function (err) {
 
                     wx.showModal({
-                        title: '图片上传失败，！！！！',
+                        title: '图片更新失败，请重新选择',
                         content:JSON.stringify(err),
                         showCancel:false,
                     });
@@ -112,7 +117,7 @@ Page({
                 }
                 wx.showModal({
                     title:'提示信息',
-                    content:'等待认证',
+                    content:'上传完成,等待认证',
                     showCancel:false,
                     success(res) {
                         wx.navigateBack();
@@ -125,6 +130,7 @@ Page({
      * 用户点击右上角分享
      */
     onShareAppMessage: function () {
+        return getApp().shareMessage();
+    },
 
-    }
 });

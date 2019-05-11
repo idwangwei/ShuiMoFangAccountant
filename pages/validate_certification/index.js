@@ -1,6 +1,6 @@
-const citys = require('../../utils/city.js');
 const api = require('../../utils/request.js');
 const defaultSrc = '/images/ico-add-addr.png';
+import {debounce} from '../../utils/util.js';
 //获取应用实例
 const app = getApp();
 Page({
@@ -12,8 +12,14 @@ Page({
     onLoad: function (option) {
         let images = option.images;
         if(images){
+            let imagesUrlArr = images.split(','); 
+            let imagesNameArr = imagesUrlArr.map((v)=>{
+                let result = v.match(/([^\.\/\\]+)\.([a-z]+)$/i);
+                return result ? result[0]:'';
+            }); 
             this.setData({
-                certificateArr:images.split(',')
+                certificateArr: imagesUrlArr,
+                serverImageNames: imagesNameArr
             });
         }
     },
@@ -33,7 +39,7 @@ Page({
                         data = JSON.parse(res.data);
                     }catch (e) {
                         wx.showToast({
-                            title: '图片上传失败，请重试',
+                            title: '图片更新失败，请重新选择',
                             icon: 'none',
                         });
                         return;
@@ -41,7 +47,7 @@ Page({
                     }
                     if (data.status !== 200) {
                         wx.showToast({
-                            title: '图片上传失败，请重试',
+                            title: '图片更新失败，请重新选择',
                             icon: 'none',
                         });
                         return;
@@ -61,13 +67,14 @@ Page({
                     }
                     that.setData({
                         certificateArr: arr,
+                        serverImageNames: serverImages
                     });
 
 
                 },
                 fail: function (err) {
                     wx.showToast({
-                        title: '图片上传失败',
+                        title: '图片更新失败，请重新选择',
                         icon: 'none'
                     });
                 }
@@ -85,7 +92,7 @@ Page({
         })
     },
 
-    bindSave: function () {
+    bindSave: debounce(function () {
         if(this.data.serverImageNames.length === 0){
             wx.showModal({
                 content:'请上传会计师从业资格证',
@@ -95,32 +102,30 @@ Page({
             return
         }
         let images = this.data.serverImageNames.join(',');
+        wx.showLoading({
+            title: '上传中',
+            mask: true
+        })
         api.fetchRequest(`/api/cert/apply/certificate?images=${images}`,{},'PUT')
             .then((res)=>{
-                if(res.data.status !== 200){
-                    wx.showModal({
-                        content:res.msg,
-                        showCancel:false,
-                    });
-
-                    return
-                }
+                wx.hideLoading();
                 wx.showModal({
                     title:'提示信息',
-                    content:'等待认证',
+                    content:'上传完成，等待认证',
                     showCancel:false,
                     success(res) {
                         wx.navigateBack();
                     }
                 })
             })
-    },
+    }),
 
     /**
      * 用户点击右上角分享
      */
     onShareAppMessage: function () {
+        return getApp().shareMessage();
+    },
 
-    }
 
 });

@@ -11,12 +11,11 @@
     "pages/score-rule/index",
     "pages/company/index",
     "pages/share-record/index",
-    "pages/share-rule/index",
     "pages/service-apply/index",
-    "pages/share-poster/index",
     "pages/validate_phone/index",
     "pages/validate_idcard/index",
-    "pages/validate_certification/index"
+    "pages/validate_certification/index",
+    "pages/note_to_apply/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

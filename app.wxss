@@ -13,6 +13,7 @@
 }
 page{
   min-height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .arrow-right{
   display: inline-block;

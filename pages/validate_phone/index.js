@@ -1,4 +1,3 @@
-const commonCityData = require('../../utils/city.js');
 const api = require('../../utils/request.js');
 //获取应用实例
 const app = getApp();
@@ -193,6 +192,7 @@ Page({
      * 用户点击右上角分享
      */
     onShareAppMessage: function () {
+        return getApp().shareMessage();
+    },
 
-    }
 });

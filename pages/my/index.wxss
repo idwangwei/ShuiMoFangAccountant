@@ -4,13 +4,12 @@
   overflow-y: hidden;
 }
 
-
 .my-avatar-warp{
-    height:45vw;
-    flex-direction:column;
-    justify-content:center;
     background: linear-gradient(#ff0a94,#f666b7);
-
+}
+.my-avatar{
+    justify-content:space-between;
+    border-top: 1px solid #ff0a94;
 }
 .my-avatar-warp .avatar-box{
     width:160rpx;
@@ -24,9 +23,34 @@
     text-align: center;
     color: #fff;
 }
+.nick-name-warp{
+    display: flex;
+    align-items: center;
+    padding: 30rpx;
+}
 .border-left{
     border-left: 2rpx solid #ededed;
 }
+.score-record-box{
+    display: flex;
+    justify-content: flex-end;
+    color: #fff;
+    font-size: 34rpx;
+}
+.score-desc-warp{
+    padding: 30rpx;
+    color: #fff;
+    display: flex;
+    justify-content: space-around;
+}
+.score-desc-remain,.score-desc-total,.score-desc-wait{
+    text-align: center;
+}
+
+.score-remain-text,.score-total-text,.score-wait-text{
+    font-size: 26rpx;
+}
+
 
 
 

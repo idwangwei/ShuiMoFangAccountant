@@ -31,8 +31,8 @@ page,
     font-size: 28rpx;
 }
 .process-edit-box .edit-box{
-     flex: 1;
-
+    flex: 1;
+    padding-left: 80rpx;
 }
 .progress-box{
     width: 100%;

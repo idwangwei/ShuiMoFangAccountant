@@ -1,6 +1,6 @@
 const app = getApp();
 const api = require('../../utils/request.js');
-
+import {debounce} from "../../utils/util";
 Page({
     data: {
         activeIndex: 0,
@@ -21,9 +21,8 @@ Page({
 
     onLoad: function () {
         let orderDetail = app.globalData.selectOrderInfo;
-
         //获取订单服务详情
-        api.fetchRequest(`/api/order/task/${orderDetail.id}`)
+        api.fetchRequest(`/api/order/serve/task/${orderDetail.id}`)
             .then((res) => {
                 if (res.data.status != 200) {
                     wx.showToast({
@@ -32,16 +31,9 @@ Page({
                     });
                     return;
                 }
-                orderDetail.items = res.data.data;
+                orderDetail.items = res.data.data.orderProdTasks;
                 this.setData({
                     orderDetail
-                })
-            })
-
-            .catch((res) => {
-                wx.showToast({
-                    title: res.msg,
-                    icon: 'none'
                 })
             })
     },
@@ -60,11 +52,11 @@ Page({
         let idx = e.currentTarget.dataset.idx;
         let serverItem = orderDetail.items[idx];
         let that = this;
-        if(serverItem.status == 'NOTSET'){
+        if (serverItem.status == 'NOTSET') {
             wx.showModal({
-                title:`确定添加【${serverItem.prodTaskName}】`,
-                success:(res)=>{
-                    if(res.confirm){
+                title: `确定添加【${serverItem.prodTaskName}】`,
+                success: (res) => {
+                    if (res.confirm) {
                         that.addOrderTask(e);
                     }
                 }
@@ -77,21 +69,23 @@ Page({
         })
     },
 
-    remarkChange:function(e){
+    remarkChange: debounce(function(e) {
         let idx = e.target.dataset.idx;
         let orderDetail = this.data.orderDetail;
-        orderDetail.items[idx].remark = e.detail.value;
+        orderDetail.items[idx].remark = String(e.detail.value);
         this.setData({
             orderDetail
         })
-    },
+        this.updateOrderTask(e);
+    }),
 
     updateOrderTask: function (e) {
         let orderId = this.data.orderDetail.id;
         let orderTask = this.data.orderDetail.items[e.target.dataset.idx];
         let orderTaskJson = encodeURIComponent(JSON.stringify(orderTask));
-
+        
         let query = `?orderTaskJson=${orderTaskJson}`;
+        wx.showLoading();
         api.fetchRequest(`/api/order/task/${orderId}/${orderTask.id}${query}`, {}, "PUT")
             .then((res) => {
                 if (res.data.status != 200) {
@@ -111,11 +105,10 @@ Page({
                     title: res.msg,
                     icon: 'none'
                 });
-
             })
     },
 
-    addOrderTask:function(e){
+    addOrderTask: function (e) {
         let orderDetail = this.data.orderDetail;
         let orderId = orderDetail.id;
         let orderTask = orderDetail.items[e.currentTarget.dataset.idx];
@@ -149,18 +142,22 @@ Page({
 
     },
 
-    orderTaskDone:function (e) {
-        
-    },
 
-    getOrderScore:function (e) {
+
+    orderTaskDone: function (e) {
 
     },
+
+    getOrderScore: function (e) {
+
+    },
+
     /**
      * 用户点击右上角分享
      */
     onShareAppMessage: function () {
+        return getApp().shareMessage();
+    },
 
-    }
 
 });

@@ -66,7 +66,6 @@
    color:#e64340;
    font-size: 28rpx;
    font-weight: bold;
-   width: 30%;
    float:left;
 }
 
@@ -83,6 +82,8 @@
 .goods-text{
   padding: 0 10rpx;
   margin-bottom: 30rpx;
+  min-height: 5vh;
+
 }
 .goods-text image{
   width: 100%;
@@ -99,21 +100,11 @@
   box-shadow:0 0 8rpx 0 ;
   justify-content: space-between;
 }
-.custom-service-box{
-  width: 80rpx;
-  height: 80rpx;
-  margin-left: 20rpx;
-  position: relative;
-}
 .custom-service-btn{
   position: absolute;
   top: 0;
   left: 0;
   opacity: 0;
-  width: 100%;
-  height: 100%;
-}
-.custom-service-img{
   width: 100%;
   height: 100%;
 }

@@ -33,18 +33,17 @@ image {
 
 .title-bg-box{
     width: 100vw;
-    height: 54vw;
     display: flex;
     justify-content: center;
     align-items: flex-end;
     background-color: #ff0a94;
     overflow: hidden;
 }
-.title-bg-box image{
-    width: 55vw;
-    height: auto;
-    margin-bottom:-6vw;
+
+.qr-code-image{
+    width: 50vw;
 }
+
 .weui-navbar__slider{
     width: 50px;
     background-color: #ff0a94;
@@ -91,4 +90,29 @@ image {
 .flex-1{
     flex: 1;
     text-align: center;
+}
+.share-poster-box{
+    margin: auto;
+    /*position: relative;*/
+}
+.share-poster-box .bottom-bar{
+    /*position: absolute;*/
+    width: 100vw;
+    height: 160rpx;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+}
+.canvas-share-box{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background:#7e7e7e;
+    z-index:1000;
+
+}
+.share-canvas{
+    margin: auto;
 }

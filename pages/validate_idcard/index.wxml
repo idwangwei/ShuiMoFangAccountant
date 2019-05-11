@@ -11,7 +11,7 @@
                 <view class="id-card-box" data-type="idcard_0" bindtap="chooseAndSavePic">
                     <image mode="aspectFit" class="choose-img"
                            src="{{idCardSrc[0]}}" wx:if="{{idCardSrc[0]}}"></image>
-                    <view class="upload-img-btn-box" wx:else>
+                    <view class="upload-img-btn-box" style="background-image:url('../../images/sfz1.png');background-size:100% 100%" wx:else>
                         <view>上传身份证正面</view>
                         <view style="display: flex;align-items: center">
                             <image src="/images/camera-icon.png" style="width:64rpx;height:64rpx;margin-right:10rpx"></image>
@@ -25,9 +25,9 @@
                 <view class="id-card-box" data-type="idcard_1" bindtap="chooseAndSavePic">
                     <image mode="aspectFit" class="choose-img"
                            src="{{idCardSrc[1]}}" wx:if="{{idCardSrc[1]}}"></image>
-                    <view class="upload-img-btn-box" wx:else>
+                    <view class="upload-img-btn-box" style="background-image:url('../../images/sfz2.png');background-size:100% 100%" wx:else>
                         <view>上传身份反面</view>
-                        <view style="display: flex;align-items: center">
+                        <view style="display: flex;align-items: center;">
                             <image src="/images/camera-icon.png" style="width:64rpx;height:64rpx;margin-right:10rpx"></image>
                             <text>点击上传</text>
                         </view>

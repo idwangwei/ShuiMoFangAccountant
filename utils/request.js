@@ -1,6 +1,7 @@
 const CONFIG = require('../config.js');
 const REQUEST_CACHE = [];
 const API_BASE_URL = 'https://api.shuimof.cn'; //阿里云
+let autoLoginTime = 1;
 
 /**
  * 简单请求封装
@@ -61,6 +62,9 @@ function FetchRequest(url, data, method = 'GET', cache = 0, header = {}, noSubDo
         if (url != '/api/wechat/auth' && url != '/api/login/wechat') {
             header.Token = getApp().globalData.token;
         }
+        if (method === 'POST'){
+            header['content-type'] = 'application/x-www-form-urlencoded';
+        }
 
         wx.request({
             url: _url,
@@ -78,13 +82,24 @@ function FetchRequest(url, data, method = 'GET', cache = 0, header = {}, noSubDo
         function FetchSuccess(res) {
             SaveCache(res);
             if (res.statusCode >= 200 && res.statusCode < 300) {
-                resolve(res);
+                if(res.data.status == 401 && autoLoginTime > 0){
+                    autoLoginTime--;
+                    getApp().LoginSys(app.globalData.userInfo.openId).then(()=>{
+                        wx.showToast({
+                            title:'调试：401已重新登录，请返回重新获取数据'
+                        })
+                    });
+                    reject(res.data)
+                }else{
+                    autoLoginTime = 1;
+                    resolve(res);
+                }
             } else {
                 FetchError(res.data);
                 switch (res.statusCode) {
                     case 403:
                         // 业务逻辑处理
-                        break
+                        break;
                 }
             }
         }
@@ -191,7 +206,7 @@ Promise.prototype.finally = function (callback) {
 };
 
 module.exports = {
-    fetchRequest: FetchRequest,
+        fetchRequest: FetchRequest,
     cacheTime: 1800,
     fetchRequestAll: FetchRequestAll,
     API_BASE_URL: API_BASE_URL

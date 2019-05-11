@@ -77,7 +77,7 @@ function throttle(fn, interval) {
  * @param delay 每次推迟执行的等待时间
  * @returns {Function}
  */
-function debounce(fn, delay) {
+function debounce(fn, delay=300) {
     // 定时器
     let timer = null;
 

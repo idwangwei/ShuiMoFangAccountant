@@ -2,7 +2,7 @@
 
     <view class="weui-media-box weui-media-box_appmsg goods-summery-box">
         <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-            <image class="weui-media-box__thumb" src="{{orderDetail.prodImageUri}}" />
+            <image class="weui-media-box__thumb" src="{{orderDetail.prodImageUri}}"/>
         </view>
         <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
             <view class="weui-media-box__title">{{orderDetail.prodName}}</view>
@@ -12,6 +12,20 @@
             <view class="weui-media-box__desc">客户电话：{{orderDetail.customerTel}}</view>
         </view>
     </view>
+    <!--<view class="weui-panel apply-score-box" wx:if="{{orderDetail.checkStatus === 'CHECKED'}}">-->
+        <!--<view class="weui-panel__hd">积分申请：</view>-->
+        <!--<view class="weui-panel__bd" style="padding:32rpx;">-->
+                <!--<view class="apply-success-info">-->
+                    <!--<view wx:for="{{orderDetail.season2Appliable}}" >-->
+                        <!--<view wx:if="{{item.checkStatus==='DONE'}}">{{item.checkTime+'申请获得'+item.credit+'积分（已完成）'}}</view>-->
+                        <!--<view wx:elif="{{item.checkStatus==='PENDING'}}">{{item.checkTime+'申请获得'+item.credit+'积分（处理中）'}}</view>-->
+                    <!--</view>-->
+                <!--</view>-->
+            <!--<button wx:if="{{orderDetail.canApplyScore}}" class="weui-btn" type="primary" plain="true"  bindtap="applyCredit">申请积分奖励</button>-->
+        <!--</view>-->
+    <!--</view>-->
+
+    <view>
 
     <view style="font-size: 40rpx;padding: 30rpx;">服务项：</view>
 
@@ -26,30 +40,37 @@
 
         <view class="process-edit-box">
             <view class="edit-box">
+            是否完成<switch bindchange="remarkChange" checked="{{item.remark === 'true'}}" data-idx="{{idx}}"/>
 
-                <view class="weui-cells weui-cells_after-title remark-box">
+                <!-- <view class="weui-cells weui-cells_after-title remark-box" wx:if="{{orderDetail.serveStatus === 'SERVING'}}">
                     <view class="weui-cell">
                         <view class="weui-cell__bd">
                             <textarea class="weui-textarea"
                                       bindinput="remarkChange"
-                                      style="min-height: 3.3em"
+                                      style="min-height: 6em"
                                       placeholder="备注信息"
                                       auto-height="true"
                                       data-idx="{{idx}}"
                                       value="{{item.remark}}"/>
+
                         </view>
                     </view>
                 </view>
+                <view wx:else>
+                    {{item.remark||''}}
+                </view>
 
-                <view class="page__bd page__bd_spacing">
+                <view class="page__bd page__bd_spacing" wx:if="{{orderDetail.serveStatus==='SERVING'}}">
 
                     <button class="weui-btn" data-idx="{{idx}}" bindtap="updateOrderTask"
-                            type="primary" plain="true" style="margin-bottom: 50rpx;margin-top: 20rpx">更新</button>
-                </view>
+                            type="primary" plain="true" style="margin-bottom: 50rpx;margin-top: 20rpx">更新
+                    </button>
+                </view> -->
 
             </view>
 
         </view>
+    </view>
     </view>
 
 

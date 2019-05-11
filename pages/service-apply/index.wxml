@@ -1,19 +1,13 @@
 <view class="container">
     <view style="background-color: #f5f5f9;width: 100%">
-
-        <view class="certificate-item-box"
-              bindtap="goValidatePhonePage"
-              style="margin: 30rpx 0">
-
+        <view class="certificate-item-box" bindtap="goValidatePhonePage" style="margin: 30rpx 0">
             <view>基本信息</view>
-            <view  style="color: #424242">
+            <view style="color: #424242">
                 <text>{{hasPhone?'去修改':'去绑定'}}</text>
                 <text class="arrow-right"></text>
             </view>
         </view>
-
-        <view class="certificate-item-box border-bottom-line"
-              bindtap="goValidateIdCardPage">
+        <view class="certificate-item-box border-bottom-line" bindtap="goValidateIdCardPage">
             <view>身份认证</view>
             <view style="color: #424242">
                 <text wx:if="{{isIdCardValidated}}">已认证</text>
@@ -22,42 +16,36 @@
                 <text class="arrow-right"></text>
             </view>
         </view>
-
-
-        <view class="certificate-item-box border-bottom-line"
-              bindtap="goValidateCertificationPage">
+        <view class="certificate-item-box border-bottom-line" bindtap="goValidateCertificationPage">
             <view>资质认证</view>
-            <view  style="color: #4b4b4b">
+            <view style="color: #4b4b4b">
                 <text wx:if="{{hasCertification}}">去添加</text>
                 <text wx:else>去上传</text>
                 <text class="arrow-right"></text>
-
             </view>
         </view>
-
-
         <view class="certificate-item-box">
             <view>业务申请</view>
         </view>
         <view class="form-box">
-            <view class="weui-cell weui-cell_input">
+            <view class="weui-cell weui-cell_input" style="align-items:flex-start">
                 <view class="weui-cell__hd">
                     <view class="weui-label">选择地区</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <picker mode="multiSelector" class="weui-input"
-                            bindchange="bindMultiPickerChange"
-                            bindcolumnchange="bindMultiPickerColumnChange"
-                            value="{{multiIndex}}"
-                            range="{{multiArray}}">
-
-                        <view class="picker">
-                            {{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+                    <view style="display:flex;" wx:for="{{locationPickerTextArr}}" wx:for-item="multiArray">
+                        <picker mode="multiSelector" class="weui-input" data-idx="{{index}}" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{locationPickerIndexArr[index]}}" range="{{multiArray}}">
+                            <view class="picker" wx:if="{{multiArray[0]!==undefined}}">
+                                {{multiArray[0][locationPickerIndexArr[index][0]]}}，{{multiArray[1][locationPickerIndexArr[index][1]]}}，{{multiArray[2][locationPickerIndexArr[index][2]]}}
+                            </view>
+                        </picker>
+                        <view class="icon-add-warp" bindtap="handleAddOrSubPicker" data-idx="{{index}}">
+                            <image src="../../images/add-addr.png" data-type="1" mode="widthFill" style="width:64rpx;height:64rpx;" wx:if="{{index === locationPickerTextArr.length-1}}"/>
+                            <image src="../../images/popup-close.png" data-type="0" mode="widthFill" style="width:64rpx;height:64rpx;" wx:else/>
                         </view>
-                    </picker>
+                    </view>
                 </view>
             </view>
-
             <view class="weui-cell weui-cell_input" style="padding: 32rpx">
                 <view class="weui-cell__hd">
                     <view class="weui-label">选择服务项</view>
@@ -65,17 +53,31 @@
                 <view class="weui-cell__bd">
                     <checkbox-group bindchange="checkboxChange">
                         <label class="checkbox" wx:for="{{serviceItems}}" wx:key="{{index}}">
-                            <checkbox value="{{item.id}}" checked="{{item.checked}}" disabled="{{formDisabled}}"/>
+                            <checkbox value="{{item.id}}" checked="{{item.checked}}" disabled="{{formDisabled}}" />
                             {{item.name}}
                         </label>
                     </checkbox-group>
                 </view>
             </view>
-
+            <view class="notes-to-apply-box">
+                <checkbox-group bindchange="notesToApplyCheckboxChange" style="margin-top:60rpx;">
+                    <label class="weui-agree" for="weuiAgree">
+                        <view class="weui-agree__text">
+                            <checkbox class="weui-agree__checkbox" id="weuiAgree" value="agree" checked="{{isAgree}}" />
+                            <view class="weui-agree__checkbox-icon">
+                                <icon class="weui-agree__checkbox-icon-check" type="success_no_circle" size="9" wx:if="{{isAgree}}"></icon>
+                            </view>
+                            阅读并同意
+                            <navigator url="/pages/note_to_apply/index" class="weui-agree__link" catch:tap="catchTap">
+                                《业务申请须知》
+                            </navigator>
+                        </view>
+                    </label>
+                </checkbox-group>
+            </view>
             <view class="weui-btn-area">
                 <button class="weui-btn" type="primary" bindtap="bindSave">{{btnStr}}</button>
             </view>
         </view>
-
     </view>
 </view>

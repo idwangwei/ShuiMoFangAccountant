@@ -19,18 +19,11 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        let that = this;
-        wx.startPullDownRefresh({
-            success: (res) => {
-
-            },
-            fail: (res) => {
-
-            },
-            complete: (res) => {
-                that.fetchData();
-            }
+        let {creditItems} = this.data.summery;
+        this.setData({
+            summery: {credit: options.creditRemain, creditItems}
         });
+        this.fetchData();
     },
     onPullDownRefresh: function () {
         this.fetchData();
@@ -41,58 +34,47 @@ Page({
         that.setData({
             isLoading: true
         });
-        api.fetchRequest('/api/credit/summary', {status: 'DONE'})
+        api.fetchRequest('/api/credit/summary', /*{status: 'DONE'}*/)
             .then(function (res) {
                 if (res.data.status != 200) {
                     wx.showToast({
                         title: res.data.msg,
                         icon: 'none'
                     });
-                    that.setData({
-                        isLoading: false
-                    });
                     return
                 }
-
+                //积分记录项字段
+                // {
+                //     credit: 10, //积分数量
+                //     date:"2019-04-17 12:57:20", //积分变动时间
+                //     desc:"E-ORDER-P", // 积分变动描述
+                //     period:"NONE", //积分变动操作者
+                //     reason:"E-ORDER-P", //
+                //     status:"WAIT" //积分状态 WAIT:下发中， PENDING:扣除中， DONE:变动完成
+                // }
                 let summery = {
-                    credit: res.data.data.credit,
-                    // creditItems: res.data.data.creditItems
-                    creditItems: [
-                        {
-                            msg: '订单奖励',
-                            date: '2019-10-22',
-                            credit: 200,
-                            type: 1
-                        },
-                        {
-                            msg: '积分提现',
-                            date: '2019-10-25',
-                            credit: 100,
-                            type: 0
-                        },
-                    ]
+                    // credit: res.data.data.credit || 0,
+                    credit: that.data.summery.credit,
+                    creditItems: res.data.data.creditItems
                 };
-
                 that.setData({
-                    isLoading: false,
                     summery
                 });
             })
-            .catch((res) => {
-                wx.showToast({
-                    title: res.msg,
-                    icon: 'none'
-                });
+            .finally(() => {
                 that.setData({
                     isLoading: false
                 });
+                wx.stopPullDownRefresh();
             })
     },
+
 
     /**
      * 用户点击右上角分享
      */
     onShareAppMessage: function () {
+        return getApp().shareMessage();
+    },
 
-    }
 });

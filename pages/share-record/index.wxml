@@ -1,6 +1,9 @@
 <view class=" page">
+    <view hidden="{{canvasHidden}}" class="canvas-share-box">
+        <canvas canvas-id='share' style='width:375px;height:603px' class="share-canvas"></canvas> 
+    </view>
     <view class="title-bg-box">
-        <image src="./../../images/title-bg.png" mode="widthFix"></image>
+        <image src="{{qrCode}}" mode="widthFix" class="qr-code-image" bindlongpress="longPressQrCode"></image>
     </view>
     <view class="page__bd">
         <view class="weui-tab">
@@ -16,7 +19,7 @@
                 </view>
             </view>
 
-            <view class="weui-tab__panel">
+            <view class="weui-tab__panel" style="-webkit-overflow-scrolling: initial;overflow: initial;padding-top: 110rpx">
                 <!--我的推广-->
                 <view wx:if="{{activeIndex == 0}}" class="share-data-box">
                     <view class="share-form-title-box">
@@ -39,6 +42,11 @@
                             <text>获得时间</text>
                         </view>
                     </view>
+                    <view wx:show="{{!shareData.length}}" class="share-form-row">
+                        <text class="flex-1">~</text>
+                        <text class="flex-1">~</text>
+                        <text class="flex-1">~</text>
+                    </view>
                     <view wx:for="{{shareData}}" class="share-form-row">
                         <text class="flex-1">{{item.popularizedName}}</text>
                         <text class="flex-1">{{item.score}}</text>
@@ -46,10 +54,21 @@
                     </view>
                 </view>
                 <!--推广海报-->
-                <view wx:elif="{{activeIndex == 1}}">
-                    <view style="margin:auto;">
-                        <image src="./../../images/share_img.png" mode="widthFix" style="width:100%;margin: 0"></image>
-                    </view>
+                <view class="share-poster-box" wx:elif="{{activeIndex == 1}}">
+                    <image src="./../../images/share_img.png" mode="widthFix"
+                           style="width:100vw;height:79.5vw;margin: 0"></image>
+                    <!-- <view class="bottom-bar">
+                        <image src="{{userInfo.avatarUrl}}" style="width:140rpx;height:140rpx"></image>
+                        <view style="flex:1;padding-left: 32rpx">
+                            <view style="font-size:32rpx;font-weight:bold;line-height:70rpx;">
+                                <text >{{userInfo.nickName}}</text>
+                            </view>
+                            <view style="font-size: 24rpx">
+                                <text>来税魔方兼职，告别又穷又闲</text>
+                            </view>
+                        </view>
+                        <image src="{{qrCode}}" style="width: 160rpx;height: 160rpx;"></image>
+                    </view> -->
                 </view>
                 <!--推广规则-->
                 <view wx:else>

@@ -62,12 +62,11 @@ Page({
         });
         api.fetchRequest('/api/products')
             .then(function (res) {
-                wx.hideLoading();
                 if (res.data.status !== 200) {
                     return
                 }
                 res.data.data.forEach((v)=>{
-                    v.isShow = v.status === ONLINE;
+                    v.isShow = v.status === ONLINE && v.prodVariants && v.prodVariants.length > 0;
                     v.titleImage= v.titleImage ? v.titleImage : '/images/goods-default-summary-pic.png';
                     v.descImage= v.descImage ? v.descImage : '/images/goods-default-details-pic.png';
                 });
@@ -75,27 +74,17 @@ Page({
                     goods: [...res.data.data],
                 });
             })
-            .catch(() => {
+            .finally(() => {
                 wx.hideLoading();
+                wx.stopPullDownRefresh();
             })
     },
 
+    /**
+     * 用户点击右上角分享
+     */
     onShareAppMessage: function () {
-
-        return {
-            title: CONFIG.shareProfile,
-            path: `/pages/start/start?inviterId=${this.data.userInfo.id}`,
-            imageUrl: '/images/share_img.png',
-            success: function (res) {
-                console.log(res)
-                // 转发成功
-            },
-            fail: function (res) {
-                // 转发失败
-                console.log(res)
-
-            }
-        }
+        return getApp().shareMessage();
     },
     listenerSearchInput: function (e) {
         this.setData({
@@ -135,5 +124,9 @@ Page({
             url: "/pages/company/index"
         })
 
+    },
+    onPullDownRefresh: function (e) {
+        this.getGoodsList();
     }
+
 });

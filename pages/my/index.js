@@ -11,13 +11,12 @@ Page({
         userInfo: {},
     },
 
-    onLoad() {
-        this.fetchData();
-    },
+    onLoad() {},
 
     onShow() {
         let that = this;
         let userInfo = app.globalData.userInfo;
+        this.fetchData();
         if (!userInfo.avatarUrl) {
             wx.navigateTo({
                 url: "/pages/start/start"
@@ -29,12 +28,20 @@ Page({
         }
     },
 
+        /**
+     * 用户点击右上角分享
+     */
+    onShareAppMessage: function () {
+        return getApp().shareMessage();
+    },
+
     toApplyPage: function (e) {
         wx.navigateTo({url: "/pages/service-apply/index"})
     },
 
     toGoldExchange: function (e) {
-        wx.navigateTo({url: "/pages/score-exchange/index"})
+        wx.navigateTo({url: `/pages/score-exchange/index?creditRemain=${this.data.empSummary.creditRemain}`})
+        // wx.navigateTo({url: `/pages/score-exchange/index?creditRemain=${110}`})
 
     },
 
@@ -44,7 +51,7 @@ Page({
     },
 
     toGoldExchangeDetail: function (e) {
-        wx.navigateTo({url: "/pages/score-record/index"})
+        wx.navigateTo({url: `/pages/score-record/index?creditRemain=${this.data.empSummary.creditRemain}`})
 
     },
 
@@ -96,10 +103,21 @@ Page({
             })
     },
 
-    /**
-     * 用户点击右上角分享
-     */
-    onShareAppMessage: function () {
+
+    cancelServiceItem:function(e){
+        let item = e.currentTarget.dataset.item;
+        let idx = e.currentTarget.dataset.idx;
+        wx.showLoading();
+        api.fetchRequest(`/api/apply/offer?location=${encodeURIComponent(item.location)}&prodCatalogId=${item.catalogId}`, {}, 'DELETE')
+            .then((res)=> {
+                this.data.serviceItems.splice(idx,1);
+                this.setData({
+                    serviceItems:this.data.serviceItems 
+                })
+            })
+            .finally(() => {
+                wx.hideLoading();
+            })
     },
 
 
